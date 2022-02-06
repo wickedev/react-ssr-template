@@ -1,0 +1,27 @@
+h1,
+p {
+  font-family: Lato;
+}
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+nav > a {
+  color: black;
+}
+
+nav > a.is-active {
+  color: blue;
+}
+
+nav > * + * {
+  margin-left: 16px;
+}
+
+.route {
+  border: 1px solid red;
+  padding: 12px 16px;
+  margin-top: 16px;
+}
