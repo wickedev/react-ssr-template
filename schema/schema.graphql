@@ -1,0 +1,113 @@
+directive @auth(require: String!) on FIELD | FIELD_DEFINITION
+
+"""Marks target object as extending part of the federated schema"""
+directive @extends on INTERFACE | OBJECT
+
+"""
+Marks target field as external meaning it will be resolved by federated schema
+"""
+directive @external on FIELD_DEFINITION
+
+"""Space separated list of primary keys needed to access federated object"""
+directive @key(fields: _FieldSet!) on INTERFACE | OBJECT
+
+"""
+Specifies the base type field set that will be selectable by the gateway
+"""
+directive @provides(fields: _FieldSet!) on FIELD_DEFINITION
+
+"""Specifies required input field set from the base type for a resolver"""
+directive @requires(fields: _FieldSet!) on FIELD_DEFINITION
+
+type AuthResponse {
+  accessToken: String!
+  expiresIn: Long!
+  refreshExpiresIn: Long!
+  refreshToken: String!
+  scope: String!
+  tokenType: String!
+}
+
+"""Local Date Time type"""
+scalar LocalDateTime
+
+"""Long type"""
+scalar Long
+
+type Mutation {
+  login(email: String!, password: String!): AuthResponse!
+  postUpload(uploadedPost: UploadedPostInput!): Post
+  refresh(token: String!): AuthResponse!
+  signUp(email: String!, name: String, password: String!): User!
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  endCursor: String!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String!
+}
+
+type Post implements Node {
+  author: User
+  authorId: ID
+  content: String
+  deletedAt: LocalDateTime
+  id: ID!
+  isAnonymous: Boolean!
+  postedAt: LocalDateTime!
+  published: Boolean!
+  title: String!
+}
+
+type PostConnect {
+  edges: [PostEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PostEdge {
+  cursor: ID!
+  node: Post!
+}
+
+type Query {
+  _service: _Service
+  posts(before: ID, last: Int): PostConnect!
+  user: User
+  users(before: ID, last: Int): UserConnect!
+}
+
+input UploadedPostInput {
+  content: String!
+  title: String!
+}
+
+type User implements Node {
+  deletedAt: LocalDateTime
+  email: String!
+  id: ID!
+  name: String
+  posts(before: ID, last: Int): PostConnect!
+  roles: [String!]!
+}
+
+type UserConnect {
+  edges: [UserEdge!]!
+  pageInfo: PageInfo!
+}
+
+type UserEdge {
+  cursor: ID!
+  node: User!
+}
+
+"""Federation type representing set of fields"""
+scalar _FieldSet
+
+type _Service {
+  sdl: String!
+}

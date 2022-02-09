@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "yarr";
 
 export const Navbar = () => (
@@ -6,11 +5,9 @@ export const Navbar = () => (
     <Link exact to="/">
       Home
     </Link>
-    {" / "}
     <Link exact to="/about">
       About Us
     </Link>
-    {" / "}
     <Link exact to="/asdf">
       Non existent route
     </Link>

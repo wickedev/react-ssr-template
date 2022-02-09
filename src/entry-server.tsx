@@ -15,5 +15,6 @@ export async function render(url: string): Promise<string> {
 
   const element = createElement(AppRoot, { router });
   await ssrPrepass(element);
+
   return renderToString(element);
 }

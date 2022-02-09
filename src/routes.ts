@@ -1,27 +1,26 @@
 export const routes = [
-    {
-      component: async () => {
-        const module = await import('./pages/About');
-  
-        return module.AboutPage;
-      },
-      path: '/about',
+  {
+    component: async () => {
+      const module = await import("./pages/About");
+
+      return module.AboutPage;
     },
-    {
-      component: async () => {
-        const module = await import('./pages/Home');
-  
-        return module.HomePage;
-      },
-      path: '/',
+    path: "/about",
+  },
+  {
+    component: async () => {
+      const module = await import("./pages/Home");
+
+      return module.HomePage;
     },
-    {
-      component: async () => {
-        const module = await import('./pages/NotFound');
-  
-        return module.NotFoundPage;
-      },
-      path: '*',
+    path: "/",
+  },
+  {
+    component: async () => {
+      const module = await import("./pages/NotFound");
+
+      return module.NotFoundPage;
     },
-  ];
-  
+    path: "*",
+  },
+];

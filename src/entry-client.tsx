@@ -8,4 +8,6 @@ const router = createBrowserRouter({
 });
 
 const container = document.getElementById("app");
-container && ReactDOM.hydrateRoot(container, <AppRoot router={router} />);
+// ReactDOM.createRoot(container!!).render(<AppRoot router={router} />);
+ReactDOM.hydrateRoot(container!!, <AppRoot router={router} />);
+//ReactDOM.render(<AppRoot router={router} />, container);
