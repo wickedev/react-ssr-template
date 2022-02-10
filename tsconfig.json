@@ -13,7 +13,6 @@
     ],
     "jsx": "react-jsx",
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "typeRoots": ["./src/typings.d.ts"]
+    "esModuleInterop": true
   }
 }

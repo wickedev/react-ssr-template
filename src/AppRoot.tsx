@@ -4,7 +4,7 @@ import "regenerator-runtime/runtime";
 import { Environment } from "relay-runtime/lib/store/RelayStoreTypes";
 import { RouterProps, RouterProvider } from "yarr";
 import { App } from "./App";
-import "./style.css";
+import "./index.css";
 
 export function AppRoot({
   router,

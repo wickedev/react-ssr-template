@@ -2,9 +2,14 @@ import fs from "fs";
 import { createApp, Middleware, send } from "h3";
 import { createServer } from "http";
 import serveStatic from "serve-static";
-import { isNotSupport, proxyMiddleware, resolveApp, root } from "./utils";
-
-
+import { ModuleNode } from "vite";
+import {
+  collectCssUrls,
+  isNotSupport,
+  proxyMiddleware,
+  resolveApp,
+  root,
+} from "./utils";
 
 export async function startDevServer() {
   const app = createApp();
@@ -59,13 +64,22 @@ export async function startDevServer() {
         "/src/entry-server.tsx"
       );
 
+      const modules: Set<ModuleNode> =
+        viteDevServer.moduleGraph.getModulesByFile(
+          resolveApp("src/AppRoot.tsx")
+        ) ?? new Set();
+
+      const styles = collectCssUrls(modules);
+
       // 4. 앱의 HTML을 렌더링합니다.
       //    이는 entry-server.js에서 내보낸(Export) `render` 함수가
       //    ReactDOMServer.renderToString()과 같은 적절한 프레임워크의 SSR API를 호출한다고 가정합니다.
       const appHtml = await render(url);
 
       // 5. 렌더링된 HTML을 템플릿에 주입합니다.
-      const html = template.replace(`<!--app-html-->`, appHtml);
+      const html = template
+        .replace(`<!--app-html-->`, appHtml)
+        .replace(`<!--app-head-->`, styles);
 
       // 6. 렌더링된 HTML을 응답으로 전송합니다.
       await send(res, html, "text/html");

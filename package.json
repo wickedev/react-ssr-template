@@ -52,10 +52,13 @@
     "@types/react-relay": "^13.0.1",
     "@types/relay-runtime": "^13.0.1",
     "@types/serve-static": "^1.13.10",
+    "autoprefixer": "^10.4.2",
     "esno": "^0.14.0",
     "exitzero": "^1.0.1",
     "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.6",
     "relay-compiler": "^13.0.2",
+    "tailwindcss": "^3.0.20",
     "vite-plugin-relay": "^1.0.7"
   }
 }
