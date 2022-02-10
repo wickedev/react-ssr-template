@@ -14,7 +14,7 @@ export async function startProdServer() {
       index: false,
     }),
   ]);
-  
+
   app.use("/graphql", (req, res, next) => {
     proxyMiddleware(req, res, () => {
       // no op
@@ -37,7 +37,9 @@ export async function startProdServer() {
         resolveApp("dist/server/entry-server.js")
       );
       const appHtml = await render(url);
-      const html = template.replace(`<!--app-html-->`, appHtml);
+      const html = template
+        .replace(`<!--app-title-->`, "React SSR")
+        .replace(`<!--app-html-->`, appHtml);
       await send(res, html, "text/html");
     } catch (e) {
       console.error(e);

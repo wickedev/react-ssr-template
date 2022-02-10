@@ -78,8 +78,9 @@ export async function startDevServer() {
 
       // 5. 렌더링된 HTML을 템플릿에 주입합니다.
       const html = template
-        .replace(`<!--app-html-->`, appHtml)
-        .replace(`<!--app-head-->`, styles);
+        .replace(`<!--app-title-->`, "React SSR")
+        .replace(`<!--app-head-->`, styles)
+        .replace(`<!--app-html-->`, appHtml);
 
       // 6. 렌더링된 HTML을 응답으로 전송합니다.
       await send(res, html, "text/html");
