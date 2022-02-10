@@ -14,6 +14,7 @@ interface RequestInit {
 }
 
 export async function fetchGraphQL(
+  isServer: boolean,
   request: RequestParameters,
   variables: Variables,
   cacheConfig: CacheConfig,
@@ -70,11 +71,11 @@ export async function fetchGraphQL(
     };
   }
 
-  const isServer = typeof window === "undefined";
-
-  return await $fetch(`http://localhost:3000/graphql`, requestInit)
-    .catch((error) => {
-      console.error(error);
-      return error?.message || "unkown error";
-    });
+  return await $fetch(
+    isServer ? `http://localhost:3000/graphql` : "/graphql",
+    requestInit
+  ).catch((error) => {
+    console.error(error);
+    return error?.message || "unkown error";
+  });
 }

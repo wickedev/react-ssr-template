@@ -1,13 +1,19 @@
 {
-    "compilerOptions": {
-      "strict": true,
-      "module": "esnext",
-      "moduleResolution": "Node",
-      "target": "ES2017",
-      "lib": ["DOM", "DOM.Iterable", "ESNext"],
-      "types": ["vite/client", "react-dom/next", "react/next"],
-      "jsx": "react-jsx",
-      "skipLibCheck": true,
-      "esModuleInterop": true
-    }
+  "compilerOptions": {
+    "strict": true,
+    "module": "esnext",
+    "moduleResolution": "Node",
+    "target": "ES2017",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "types": [
+      "vite/client",
+      "react-dom/next",
+      "react/next",
+      "./src/typings.d.ts"
+    ],
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "typeRoots": ["./src/typings.d.ts"]
   }
+}
