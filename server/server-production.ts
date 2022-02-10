@@ -2,7 +2,7 @@ import fs from "fs";
 import { createApp, send } from "h3";
 import { createServer } from "http";
 import serveStatic from "serve-static";
-import { isNotSupport, resolveApp } from "./utils";
+import { isNotSupport, proxyMiddleware, resolveApp } from "./utils";
 
 export async function startProdServer() {
   const app = createApp();
@@ -14,8 +14,13 @@ export async function startProdServer() {
       index: false,
     }),
   ]);
+  
+  app.use("/graphql", (req, res, next) => {
+    proxyMiddleware(req, res, () => {
+      // no op
+    });
+  });
 
-  app.use("/graphql", async (req, res, next) => {});
   app.use("*", async (req, res, next) => {
     if (isNotSupport(req)) {
       return next();

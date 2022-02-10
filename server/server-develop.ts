@@ -1,23 +1,10 @@
 import fs from "fs";
 import { createApp, Middleware, send } from "h3";
 import { createServer } from "http";
-import { createProxyMiddleware as proxy } from "http-proxy-middleware";
 import serveStatic from "serve-static";
-import { isNotSupport as isNotSupport, resolveApp, root } from "./utils";
+import { isNotSupport, proxyMiddleware, resolveApp, root } from "./utils";
 
-const isDevelopment = process.env.NODE_ENV === "development";
 
-const REMOTE_SERVER = process.env.REMOTE_SERVER || "http://localhost:8080";
-
-const proxyHandler = proxy({
-  target: REMOTE_SERVER,
-  changeOrigin: true,
-  autoRewrite: true,
-  logLevel: "debug",
-  pathRewrite: {
-    "^/api/graphql": "/graphql",
-  },
-}) as Middleware;
 
 export async function startDevServer() {
   const app = createApp();
@@ -44,7 +31,7 @@ export async function startDevServer() {
   app.use(viteDevServer.middlewares);
 
   app.use("/graphql", (req, res, next) => {
-    proxyHandler(req, res, () => {
+    proxyMiddleware(req, res, () => {
       // no op
     });
   });
