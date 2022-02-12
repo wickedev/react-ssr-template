@@ -11,6 +11,8 @@ import {
 import { RecordMap } from "relay-runtime/lib/store/RelayStoreTypes";
 import { fetchGraphQL } from "./fetchGraphQL";
 
+const isServer = typeof window === "undefined";
+
 function fetchRelay(
   request: RequestParameters,
   variables: Variables,
@@ -20,17 +22,16 @@ function fetchRelay(
   console.log(
     `fetching query ${request.name} with ${JSON.stringify(variables)}`
   );
-  const isServer = typeof window === "undefined";
   return fetchGraphQL(isServer, request, variables, cacheConfig, uploadables);
 }
 
 export function createRelayEnvironment(records?: RecordMap) {
-  const isServer = typeof window === "undefined";
   const network = Network.create(fetchRelay);
   const source = new RecordSource(records);
   const store = new Store(source, { gcReleaseBufferSize: 10 });
   return new Environment({
     configName: isServer ? "server" : "client",
+    isServer,
     network,
     store,
   });

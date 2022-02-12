@@ -7,6 +7,11 @@ const config: UserConfigExport = defineConfig({
   define: {
     "process.env": process.env,
   },
+  resolve: {
+    alias: {
+      "node:fetch": "node-fetch",
+    },
+  },
 });
 
 export default config;

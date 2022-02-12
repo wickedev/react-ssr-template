@@ -4,13 +4,14 @@ import ssrPrepass from "react-ssr-prepass";
 import { createMemoryRouter } from "yarr";
 import { AppRoot } from "./AppRoot";
 import { createRelayEnvironment } from "./relay/RelayEnvironment";
-import { routes } from "./routes";
+import { createRoutes } from "./routes";
 
 export async function render(url: string): Promise<string> {
   const relayEnvironment = createRelayEnvironment({});
+
   const router = createMemoryRouter(
     {
-      routes,
+      routes: createRoutes(relayEnvironment),
     },
     { initialEntries: [url] }
   );
