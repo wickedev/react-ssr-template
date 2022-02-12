@@ -76,6 +76,7 @@ type PostEdge {
 
 type Query {
   _service: _Service
+  node(id: ID!): Node
   posts(before: ID, last: Int): PostConnect!
   user: User
   users(before: ID, last: Int): UserConnect!

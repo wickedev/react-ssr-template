@@ -1,14 +1,13 @@
 import { graphql, PreloadedQuery, usePreloadedQuery } from "react-relay";
-import { RouteProps } from 'yarr';
+import { RouteProps } from "yarr";
 import { Posts } from "../components/Posts";
 import { HomePostsQuery } from "./__generated__/HomePostsQuery.graphql";
 
-interface HomePageProps extends RouteProps<'/'>{
-     preloaded: {
-       query:  PreloadedQuery<HomePostsQuery>;
-     };
+export interface HomePageProps extends RouteProps<"/"> {
+  preloaded: {
+    query: PreloadedQuery<HomePostsQuery>;
+  };
 }
-
 export const homePostsQuery = graphql`
   query HomePostsQuery {
     ...PostsFragment_query

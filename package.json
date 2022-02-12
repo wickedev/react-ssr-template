@@ -17,7 +17,7 @@
     "server:prod": "cross-env NODE_ENV=production esno ./server",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write \"**/*.[jt]s?(x)\"",
-    "schema": "exitzero graphql-codegen"
+    "schema": "exitzero graphql-codegen --config config.yml"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^1.1.4",

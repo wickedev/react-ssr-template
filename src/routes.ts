@@ -1,15 +1,13 @@
 import { Environment, loadQuery } from "react-relay";
+import { RouteConfig, RouteParameters, RouteProps, RoutesConfig } from "yarr";
 import { homePostsQuery } from "./pages/Home";
+import { postQuery } from "./pages/Post";
 
-export function createRoutes(relayEnvironment: Environment) {
-  return [
-    {
-      path: "/about",
-      component: async () => {
-        const module = await import("./pages/About");
-        return module.AboutPage;
-      },
-    },
+export interface PreloadQueryRouteProps extends RouteProps<string> {
+  preloaded: any;
+}
+export function createRoutes(relayEnvironment: Environment): RoutesConfig {
+  return (<RouteConfig<string, string, PreloadQueryRouteProps>[]>[
     {
       path: "/",
       component: async () => {
@@ -21,11 +19,33 @@ export function createRoutes(relayEnvironment: Environment) {
       }),
     },
     {
+      path: "/about",
+      component: async () => {
+        const module = await import("./pages/About");
+        return module.AboutPage;
+      },
+    },
+    {
+      path: "/post/:id",
+      component: async () => {
+        const module = await import("./pages/Post");
+        return module.PostPage;
+      },
+      preload: (routeParameters: RouteParameters<"/post/:id">) => {
+        console.log(routeParameters);
+        return {
+          query: loadQuery(relayEnvironment, postQuery, {
+            id: routeParameters.id,
+          }),
+        };
+      },
+    },
+    {
       path: "*",
       component: async () => {
         const module = await import("./pages/NotFound");
         return module.NotFoundPage;
       },
     },
-  ];
+  ]) as any;
 }
