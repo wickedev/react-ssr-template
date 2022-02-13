@@ -46,9 +46,9 @@ export async function startProdServer() {
       const appHtml = await render(url, helmetContext);
       const { helmet } = helmetContext;
       const html = template
-        .replace(`</head>`, helmet.title.toString())
-        .replace(`</head>`, helmet.link.toString())
-        .replace(`</head>`, helmet.meta.toString())
+        .replace(`</head>`, `${helmet.title.toString()}</head>`)
+        .replace(`</head>`, `${helmet.link.toString()}</head>`)
+        .replace(`</head>`, `${helmet.meta.toString()}</head>`)
         .replace(`<!--app-html-->`, appHtml);
       await send(res, html, "text/html");
     } catch (e) {

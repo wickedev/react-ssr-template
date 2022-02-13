@@ -9,7 +9,7 @@ import {
   isNotSupport,
   proxyMiddleware,
   resolveApp,
-  root,
+  root
 } from "./utils";
 
 export async function startDevServer() {
@@ -74,8 +74,6 @@ export async function startDevServer() {
           resolveApp("src/AppRoot.tsx")
         ) ?? new Set();
 
-      const styles = collectCssUrls(modules);
-
       const helmetContext = {} as FilledContext;
 
       // 4. 앱의 HTML을 렌더링합니다.
@@ -85,15 +83,13 @@ export async function startDevServer() {
 
       const { helmet } = helmetContext;
 
-      console.log("title", helmet.title.toString());
-
       // 5. 렌더링된 HTML을 템플릿에 주입합니다.
       const html = template
         .replace(`<!--app-title-->`, "React SSR")
-        .replace(`</head>`, helmet.title.toString())
-        .replace(`</head>`, helmet.link.toString())
-        .replace(`</head>`, helmet.meta.toString())
-        .replace(`</head>`, styles)
+        .replace(`</head>`, `${helmet.title.toString()}</head>`)
+        .replace(`</head>`, `${helmet.link.toString()}</head>`)
+        .replace(`</head>`, `${helmet.meta.toString()}</head>`)
+        .replace(`</head>`, `${collectCssUrls(modules)}</head>`)
         .replace(`<!--app-html-->`, appHtml);
 
       // 6. 렌더링된 HTML을 응답으로 전송합니다.

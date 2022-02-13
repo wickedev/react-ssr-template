@@ -9,10 +9,10 @@ export function App() {
       <RouteRenderer
         pendingIndicator={<p>...pending loading </p>}
         routeWrapper={({ Route }) => (
-          <Layout>
+          <>
             <Navbar />
-            <div className="route">{Route}</div>
-          </Layout>
+            <main className="pt-16 h-full">{Route}</main>
+          </>
         )}
       />
     </Suspense>

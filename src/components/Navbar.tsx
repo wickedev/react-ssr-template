@@ -7,7 +7,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav>
+    <nav className="w-full h-16 py-4 space-x-4 bg-white fixed z-10">
       <Link exact to="/" onClick={handleClick}>
         Home
       </Link>

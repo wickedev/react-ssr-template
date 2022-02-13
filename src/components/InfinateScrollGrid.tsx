@@ -3,7 +3,7 @@ import {
   ItemContent,
   ItemProps,
   Virtuoso,
-  VirtuosoHandle
+  VirtuosoHandle,
 } from "react-virtuoso";
 
 type InfinateScrollGridProps<D> = {
@@ -41,10 +41,8 @@ const List = forwardRef<HTMLDivElement>(
 const FancyScroller = React.forwardRef(
   ({ children, ...props }, ref: React.Ref<HTMLDivElement>) => {
     return (
-      <div style={{ border: "1px solid pink" }}>
-        <div {...props} ref={ref}>
-          {children}
-        </div>
+      <div {...props} ref={ref}>
+        {children}
       </div>
     );
   }
@@ -64,11 +62,6 @@ export function InfinateScrollGrid<D>({
   return (
     <Virtuoso
       ref={virtuoso}
-      className="w-96"
-      style={{
-        height: 600,
-        outline: "1px solid black",
-      }}
       data={data}
       endReached={endReached}
       itemContent={itemContent}
@@ -78,15 +71,7 @@ export function InfinateScrollGrid<D>({
         Item,
         Footer: () => {
           return (
-            <div
-              style={{
-                padding: "2rem",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              {hasMoreData && "Loading..."}
-            </div>
+            <div className="w-full p-2 text-center">{hasMoreData ? "Loading...": "No More Data"}</div>
           );
         },
       }}
