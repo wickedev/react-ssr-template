@@ -11,7 +11,7 @@ export function App() {
         routeWrapper={({ Route }) => (
           <>
             <Navbar />
-            <main className="pt-16 h-full">{Route}</main>
+            {Route}
           </>
         )}
       />

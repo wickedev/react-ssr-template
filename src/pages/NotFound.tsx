@@ -1,4 +1,5 @@
+import { Content } from "../components/Content";
+
 export function NotFoundPage() {
-  console.log('NotFoundPage');
-  return <div>NotFound</div>;
+  return <Content>NotFound</Content>;
 }

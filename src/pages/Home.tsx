@@ -20,5 +20,7 @@ export function HomePage({ preloaded }: HomePageProps) {
     preloaded.query
   );
 
-  return <Posts postsRef={postsRef} />;
+  return (
+      <Posts postsRef={postsRef} />
+  );
 }

@@ -26,6 +26,20 @@ export function createRoutes(relayEnvironment: Environment): RoutesConfig {
       },
     },
     {
+      path: "/login",
+      component: async () => {
+        const module = await import("./pages/Login");
+        return module.LoginPage;
+      },
+    },
+    {
+      path: "/sign-up",
+      component: async () => {
+        const module = await import("./pages/SignUp");
+        return module.SignUpPage;
+      },
+    },
+    {
       path: "/post/:id",
       component: async () => {
         const module = await import("./pages/Post");

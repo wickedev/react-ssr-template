@@ -1,4 +1,6 @@
+import { Content } from "../components/Content";
+
 export function AboutPage() {
   console.log('AboutPage');
-  return <div>About</div>;
+  return <Content>About</Content>;
 }

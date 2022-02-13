@@ -20,6 +20,8 @@
     "schema": "exitzero graphql-codegen --config config.yml"
   },
   "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
     "@vitejs/plugin-react": "^1.1.4",
     "cross-env": "^7.0.3",
     "graphql": "^16.3.0",
@@ -32,6 +34,7 @@
     "react-dom": "rc",
     "react-error-boundary": "^3.1.4",
     "react-helmet-async": "^1.2.2",
+    "react-hook-form": "^7.27.0",
     "react-relay": "^13.0.2",
     "react-relay-network-modern": "^6.2.1",
     "react-ssr-prepass": "^1.5.0",
@@ -44,7 +47,8 @@
     "vite-plugin-ssr": "^0.3.51",
     "vite-ssr": "^0.15.0",
     "whatwg-fetch": "^3.6.2",
-    "yarr": "^2.0.4"
+    "yarr": "^2.0.4",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/runtime": "^7.17.0",
