@@ -990,6 +990,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-helmet-async@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@types/react-helmet-async@npm:1.0.3"
+  dependencies:
+    react-helmet-async: "*"
+  checksum: 420a1fcd84027079e736d263e79ee290b98fae955518dc9ce3203da1c11dacd6c8a0045050657b0d473991e3133b050ebc43131fad47ae7c79964a21cd44bacc
+  languageName: node
+  linkType: hard
+
 "@types/react-relay@npm:^13.0.1":
   version: 13.0.1
   resolution: "@types/react-relay@npm:13.0.1"
@@ -4334,7 +4343,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.2.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.2.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -5237,6 +5246,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prop-types@npm:^15.7.2":
+  version: 15.8.1
+  resolution: "prop-types@npm:15.8.1"
+  dependencies:
+    loose-envify: ^1.4.0
+    object-assign: ^4.1.1
+    react-is: ^16.13.1
+  checksum: c056d3f1c057cb7ff8344c645450e14f088a915d078dcda795041765047fa080d38e5d626560ccaac94a4e16e3aa15f3557c1a9a8d1174530955e992c675e459
+  languageName: node
+  linkType: hard
+
 "pump@npm:^3.0.0":
   version: 3.0.0
   resolution: "pump@npm:3.0.0"
@@ -5303,6 +5323,36 @@ __metadata:
   peerDependencies:
     react: ">=16.13.1"
   checksum: f36270a5d775a25c8920f854c0d91649ceea417b15b5bc51e270a959b0476647bb79abb4da3be7dd9a4597b029214e8fe43ea914a7f16fa7543c91f784977f1b
+  languageName: node
+  linkType: hard
+
+"react-fast-compare@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "react-fast-compare@npm:3.2.0"
+  checksum: 8ef272c825ae329f61633ce4ce7f15aa5b84e5214d88bc0823880236e03e985a13195befa2c7a4eda7db3b017dc7985729152d88445823f652403cf36c2b86aa
+  languageName: node
+  linkType: hard
+
+"react-helmet-async@npm:*, react-helmet-async@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "react-helmet-async@npm:1.2.2"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+    invariant: ^2.2.4
+    prop-types: ^15.7.2
+    react-fast-compare: ^3.2.0
+    shallowequal: ^1.1.0
+  peerDependencies:
+    react: ^16.6.0 || ^17.0.0
+    react-dom: ^16.6.0 || ^17.0.0
+  checksum: 3251ab596143a48f9380a78a9e71f451ef729e25081bb4c1476561a1689eee23d650964e1518792bd44a8d24d95da1f9774b9b7ed80cae8eccc8119d7f5dd3f3
+  languageName: node
+  linkType: hard
+
+"react-is@npm:^16.13.1":
+  version: 16.13.1
+  resolution: "react-is@npm:16.13.1"
+  checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
   languageName: node
   linkType: hard
 
@@ -5621,6 +5671,7 @@ __metadata:
     "@types/node": ^17.0.15
     "@types/react": ^17.0.39
     "@types/react-dom": ^17.0.11
+    "@types/react-helmet-async": ^1.0.3
     "@types/react-relay": ^13.0.1
     "@types/relay-runtime": ^13.0.1
     "@types/serve-static": ^1.13.10
@@ -5640,6 +5691,7 @@ __metadata:
     react: rc
     react-dom: rc
     react-error-boundary: ^3.1.4
+    react-helmet-async: ^1.2.2
     react-relay: ^13.0.2
     react-relay-network-modern: ^6.2.1
     react-ssr-prepass: ^1.5.0
@@ -5822,6 +5874,13 @@ __metadata:
   version: 1.2.0
   resolution: "setprototypeof@npm:1.2.0"
   checksum: be18cbbf70e7d8097c97f713a2e76edf84e87299b40d085c6bf8b65314e994cc15e2e317727342fa6996e38e1f52c59720b53fe621e2eb593a6847bf0356db89
+  languageName: node
+  linkType: hard
+
+"shallowequal@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "shallowequal@npm:1.1.0"
+  checksum: f4c1de0837f106d2dbbfd5d0720a5d059d1c66b42b580965c8f06bb1db684be8783538b684092648c981294bf817869f743a066538771dbecb293df78f765e00
   languageName: node
   linkType: hard
 

@@ -1,6 +1,7 @@
 import fs from "fs";
 import { createApp, Middleware, send } from "h3";
 import { createServer } from "http";
+import { FilledContext } from "react-helmet-async";
 import serveStatic from "serve-static";
 import { ModuleNode } from "vite";
 import {
@@ -48,6 +49,10 @@ export async function startDevServer() {
 
     const url = req.url!!;
 
+    if (/^\/(api|graphql)/.test(url)) {
+      return next();
+    }
+
     try {
       // 1. index.html 파일을 읽어들입니다.
       const indexHtml = fs.readFileSync(resolveApp("index.html"), "utf-8");
@@ -71,15 +76,23 @@ export async function startDevServer() {
 
       const styles = collectCssUrls(modules);
 
+      const helmetContext = {} as FilledContext;
+
       // 4. 앱의 HTML을 렌더링합니다.
       //    이는 entry-server.js에서 내보낸(Export) `render` 함수가
       //    ReactDOMServer.renderToString()과 같은 적절한 프레임워크의 SSR API를 호출한다고 가정합니다.
-      const appHtml = await render(url);
+      const appHtml = await render(url, helmetContext);
+
+      const { helmet } = helmetContext;
+
+//  etc…
+
 
       // 5. 렌더링된 HTML을 템플릿에 주입합니다.
       const html = template
         .replace(`<!--app-title-->`, "React SSR")
-        .replace(`<!--app-head-->`, styles)
+        .replace(`</head>`, styles)
+        .replace(`</head>`, helmet.title.toString())
         .replace(`<!--app-html-->`, appHtml);
 
       // 6. 렌더링된 HTML을 응답으로 전송합니다.

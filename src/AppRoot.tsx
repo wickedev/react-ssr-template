@@ -1,4 +1,5 @@
 import { StrictMode } from "react";
+import { FilledContext, Helmet, HelmetProvider } from "react-helmet-async";
 import { RelayEnvironmentProvider } from "react-relay";
 import "regenerator-runtime/runtime";
 import { Environment } from "relay-runtime/lib/store/RelayStoreTypes";
@@ -9,17 +10,24 @@ import "./index.css";
 export function AppRoot({
   router,
   relayEnvironment,
+  helmetContext,
 }: {
   router: RouterProps;
   relayEnvironment: Environment;
+  helmetContext?: FilledContext;
 }) {
   return (
     <StrictMode>
-      <RelayEnvironmentProvider environment={relayEnvironment}>
-        <RouterProvider router={router}>
-          <App />
-        </RouterProvider>
-      </RelayEnvironmentProvider>
+      <HelmetProvider context={helmetContext}>
+        <RelayEnvironmentProvider environment={relayEnvironment}>
+          <RouterProvider router={router}>
+            <Helmet>
+              <title>Hello Relay</title>
+            </Helmet>
+            <App />
+          </RouterProvider>
+        </RelayEnvironmentProvider>
+      </HelmetProvider>
     </StrictMode>
   );
 }

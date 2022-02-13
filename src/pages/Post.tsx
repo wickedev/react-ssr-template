@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { graphql, PreloadedQuery, usePreloadedQuery } from "react-relay";
 import { RouteProps } from "yarr";
 import { PostQuery } from "./__generated__/PostQuery.graphql";
@@ -22,5 +23,12 @@ export const postQuery = graphql`
 export function PostPage({ preloaded }: PostPageProps) {
   const data = usePreloadedQuery(postQuery, preloaded.query);
 
-  return <div>{JSON.stringify(data.node, null, 2)}</div>;
+  return (
+    <div>
+      <Helmet>
+        <title>{data.node?.title}</title>
+      </Helmet>
+      {JSON.stringify(data.node, null, 2)}
+    </div>
+  );
 }

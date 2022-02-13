@@ -28,6 +28,10 @@ export async function startProdServer() {
 
     const url = req.url!!;
 
+    if (/^\/(api|graphql)/.test(url)) {
+      return next();
+    }
+
     try {
       const template = fs.readFileSync(
         resolveApp("dist/client/index.html"),
