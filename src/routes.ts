@@ -32,7 +32,6 @@ export function createRoutes(relayEnvironment: Environment): RoutesConfig {
         return module.PostPage;
       },
       preload: (routeParameters: RouteParameters<"/post/:id">) => {
-        console.log(routeParameters);
         return {
           query: loadQuery(relayEnvironment, postQuery, {
             id: routeParameters.id,

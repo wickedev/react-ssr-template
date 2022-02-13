@@ -9,7 +9,6 @@
       "vite/client",
       "react-dom/next",
       "react/next",
-      "./src/typings.d.ts"
     ],
     "jsx": "react-jsx",
     "skipLibCheck": true,
