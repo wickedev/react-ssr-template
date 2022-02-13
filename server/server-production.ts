@@ -1,6 +1,7 @@
 import fs from "fs";
 import { createApp, send } from "h3";
 import { createServer } from "http";
+import { FilledContext } from "react-helmet-async";
 import serveStatic from "serve-static";
 import { isNotSupport, proxyMiddleware, resolveApp } from "./utils";
 
@@ -40,9 +41,14 @@ export async function startProdServer() {
       const { render } = await import(
         resolveApp("dist/server/entry-server.js")
       );
-      const appHtml = await render(url);
+
+      const helmetContext = {} as FilledContext;
+      const appHtml = await render(url, helmetContext);
+      const { helmet } = helmetContext;
       const html = template
-        .replace(`<!--app-title-->`, "React SSR")
+        .replace(`</head>`, helmet.title.toString())
+        .replace(`</head>`, helmet.link.toString())
+        .replace(`</head>`, helmet.meta.toString())
         .replace(`<!--app-html-->`, appHtml);
       await send(res, html, "text/html");
     } catch (e) {
