@@ -885,6 +885,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:^2.8.8":
+  version: 2.8.8
+  resolution: "@hookform/resolvers@npm:2.8.8"
+  peerDependencies:
+    react-hook-form: ^7.0.0
+  checksum: 3de8b00ba3d085cd29b8d9d41bb17f5e31a483e46dafef98a37d898fbf5f3d19a74729e1cda8d15d7513486b5886ea12fbef0c1aa4ed009e3cf3c804cbe325a2
+  languageName: node
+  linkType: hard
+
 "@iarna/toml@npm:^2.2.5":
   version: 2.2.5
   resolution: "@iarna/toml@npm:2.2.5"
@@ -5883,6 +5892,7 @@ __metadata:
     "@emotion/styled": ^11.6.0
     "@graphql-codegen/cli": ^2.5.0
     "@graphql-codegen/schema-ast": ^2.4.1
+    "@hookform/resolvers": ^2.8.8
     "@types/node": ^17.0.15
     "@types/react": ^17.0.39
     "@types/react-dom": ^17.0.11
