@@ -30,6 +30,7 @@ export function SignUpPage() {
     ) {
       signUp(email: $email, name: $name, password: $password) {
         id
+        name
       }
     }
   `);
@@ -37,6 +38,7 @@ export function SignUpPage() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<SignUpInput>({
     resolver: yupResolver(schema),
@@ -49,9 +51,15 @@ export function SignUpPage() {
         name: null,
       },
       onCompleted: (response, errors) => {
-        if (!errors) {
-            navigation.push('/')
-        }
+        navigation.push("/");
+      },
+      onError: (error) => {
+        setError("password", {
+          message:    (error as any).source.errors
+          .flatMap((e: any) => Object.values(e.extensions))
+          .map((e: any) => e.message)
+          .join(', ')
+        })
       },
     });
   };
@@ -68,7 +76,7 @@ export function SignUpPage() {
           type="email"
           {...register("email")}
         />
-        <p className="font-sans text-sm text-rose-600">
+        <p className="pl-2 font-sans text-sm text-rose-600">
           {errors.email?.message}
         </p>
         <input
@@ -77,7 +85,7 @@ export function SignUpPage() {
           type="password"
           {...register("password")}
         />
-        <p className="font-sans text-sm text-rose-600">
+        <p className="pl-2 font-sans text-sm text-rose-600">
           {errors.password?.message}
         </p>
         <button type="submit" disabled={isInFlight}>
