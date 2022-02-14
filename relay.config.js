@@ -7,5 +7,6 @@ module.exports = {
   customScalars: {
     Date: "string",
     URI: "string",
+    Long: "number",
   },
 };

@@ -2,11 +2,15 @@ import { Environment, loadQuery } from "react-relay";
 import { RouteConfig, RouteParameters, RouteProps, RoutesConfig } from "yarr";
 import { homePostsQuery } from "./pages/Home";
 import { postQuery } from "./pages/Post";
+import { IRequestContext } from "./relay/RequestContext";
 
 export interface PreloadQueryRouteProps extends RouteProps<string> {
   preloaded: any;
 }
-export function createRoutes(relayEnvironment: Environment): RoutesConfig {
+export function createRoutes(
+  requestContext: IRequestContext,
+  relayEnvironment: Environment
+): RoutesConfig {
   return (<RouteConfig<string, string, PreloadQueryRouteProps>[]>[
     {
       path: "/",
@@ -30,6 +34,9 @@ export function createRoutes(relayEnvironment: Environment): RoutesConfig {
       component: async () => {
         const module = await import("./pages/Login");
         return module.LoginPage;
+      },
+      redirectRules: () => {
+        return requestContext.accessToken ? "/" : null;
       },
     },
     {

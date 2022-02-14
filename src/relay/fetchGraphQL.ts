@@ -3,8 +3,9 @@ import { UploadableMap } from "relay-runtime/lib/network/RelayNetworkTypes";
 import { RequestParameters } from "relay-runtime/lib/util/RelayConcreteNode";
 import {
   CacheConfig,
-  Variables,
+  Variables
 } from "relay-runtime/lib/util/RelayRuntimeTypes";
+import { IRequestContext } from "./RelayEnvironment";
 
 interface RequestInit {
   method: string;
@@ -14,7 +15,7 @@ interface RequestInit {
 }
 
 export async function fetchGraphQL(
-  isServer: boolean,
+  context: IRequestContext,
   request: RequestParameters,
   variables: Variables,
   cacheConfig: CacheConfig,
@@ -25,6 +26,13 @@ export async function fetchGraphQL(
     credentials: "include",
     headers: {},
   };
+
+  if (context.accessToken) {
+    requestInit.headers = {
+      ...requestInit.headers,
+      Authorization: `Bearer ${context.accessToken}`,
+    };
+  }
 
   if (uploadables && request.text) {
     if (!window.FormData) {
@@ -72,7 +80,7 @@ export async function fetchGraphQL(
   }
 
   return await $fetch(
-    isServer ? `http://localhost:3000/graphql` : "/graphql",
+    context.isServer ? `http://localhost:3000/graphql` : "/graphql",
     requestInit
   ).catch((error) => {
     console.error(error);

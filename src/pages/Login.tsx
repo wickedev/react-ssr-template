@@ -1,9 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { graphql, useMutation } from "react-relay";
-import { useNavigation } from "yarr";
+import { graphql, useMutation, useRelayEnvironment } from "react-relay";
+import { Link, useNavigation } from "yarr";
 import * as yup from "yup";
 import { Content } from "../components/Content";
+import { useRequestContext } from "../relay/RequestContext";
 import { LoginMutation } from "./__generated__/LoginMutation.graphql";
 
 interface LoginInput {
@@ -22,11 +23,16 @@ const schema = yup
   .required();
 
 export function LoginPage() {
+  const environment = useRelayEnvironment();
+  const requestContext = useRequestContext();
   const [commit, isInFlight] = useMutation<LoginMutation>(graphql`
     mutation LoginMutation($email: String!, $password: String!) {
       login(email: $email, password: $password) {
-         accessToken
-         refreshToken
+        userId
+        accessToken
+        expiresIn
+        refreshToken
+        refreshExpiresIn
       }
     }
   `);
@@ -46,6 +52,10 @@ export function LoginPage() {
         ...data,
       },
       onCompleted: (response, errors) => {
+        environment.commitUpdate((store) => {
+          store.get(response.login.userId)?.invalidateRecord();
+        });
+        requestContext.onLoginSuccess(response.login);
         navigation.push("/");
       },
       onError: (error) => {
@@ -60,7 +70,7 @@ export function LoginPage() {
   };
 
   return (
-    <Content>
+    <Content className="gap-y-8">
       <form
         className="flex flex-col w-72 pt-16 gap-y-2"
         onSubmit={handleSubmit(onSubmit)}
@@ -87,6 +97,7 @@ export function LoginPage() {
           {isInFlight ? "Loading..." : "Login"}
         </button>
       </form>
+      <Link to="/sign-up">Go To Sign Up</Link>
     </Content>
   );
 }

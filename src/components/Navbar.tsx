@@ -1,7 +1,13 @@
-import { Link } from "yarr";
 import { MouseEvent } from "react";
+import { useSnapshot } from "valtio";
+import { Link } from "yarr";
+import { useRequestContext } from "../relay/RequestContext";
+import { Logout } from "./Logout";
+import { UserInfo } from "./UserInfo";
 
 export const Navbar = () => {
+  const requestContext = useSnapshot(useRequestContext());
+
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     console.log(`Link clicked: ${(e.target as any).href}`);
   };
@@ -21,14 +27,16 @@ export const Navbar = () => {
               Non existent route
             </Link>
           </span>
-          <span className="space-x-4">
+          {requestContext.accessToken ? (
+            <span className="space-x-4">
+              <UserInfo />
+              <Logout />
+            </span>
+          ) : (
             <Link exact to="/login" onClick={handleClick}>
               Login
             </Link>
-            <Link exact to="/sign-up" onClick={handleClick}>
-              Sign Up
-            </Link>
-          </span>
+          )}
         </nav>
       </div>
     </div>

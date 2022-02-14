@@ -1,5 +1,5 @@
 import fs from "fs";
-import { createApp, send } from "h3";
+import { createApp, send, useCookies } from "h3";
 import { createServer } from "http";
 import { FilledContext } from "react-helmet-async";
 import serveStatic from "serve-static";
@@ -9,7 +9,7 @@ import {
   isNotSupport,
   proxyMiddleware,
   resolveApp,
-  root
+  root,
 } from "./utils";
 
 export async function startDevServer() {
@@ -43,6 +43,7 @@ export async function startDevServer() {
   });
 
   app.use("*", async (req, res, next) => {
+    const cookies = useCookies(req);
     if (isNotSupport(req)) {
       return next();
     }
@@ -79,7 +80,7 @@ export async function startDevServer() {
       // 4. 앱의 HTML을 렌더링합니다.
       //    이는 entry-server.js에서 내보낸(Export) `render` 함수가
       //    ReactDOMServer.renderToString()과 같은 적절한 프레임워크의 SSR API를 호출한다고 가정합니다.
-      const appHtml = await render(url, helmetContext);
+      const appHtml = await render(url, helmetContext, cookies);
 
       const { helmet } = helmetContext;
 

@@ -28,6 +28,16 @@ type AuthResponse {
   tokenType: String!
 }
 
+type AuthResponseWithID {
+  accessToken: String!
+  expiresIn: Long!
+  refreshExpiresIn: Long!
+  refreshToken: String!
+  scope: String!
+  tokenType: String!
+  userId: ID!
+}
+
 """Local Date Time type"""
 scalar LocalDateTime
 
@@ -35,7 +45,7 @@ scalar LocalDateTime
 scalar Long
 
 type Mutation {
-  login(email: String!, password: String!): AuthResponse!
+  login(email: String!, password: String!): AuthResponseWithID!
   postUpload(uploadedPost: UploadedPostInput!): Post
   refresh(token: String!): AuthResponse!
   signUp(email: String!, name: String, password: String!): User!
@@ -76,9 +86,10 @@ type PostEdge {
 
 type Query {
   _service: _Service
+  myInfo: User
   node(id: ID!): Node
+  post(id: ID!): Post!
   posts(before: ID, last: Int): PostConnect!
-  user: User
   users(before: ID, last: Int): UserConnect!
 }
 
