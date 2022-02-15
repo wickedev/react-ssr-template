@@ -1,5 +1,5 @@
 import fs from "fs";
-import { createApp, send } from "h3";
+import { createApp, send, useCookies } from "h3";
 import { createServer } from "http";
 import { FilledContext } from "react-helmet-async";
 import serveStatic from "serve-static";
@@ -23,6 +23,7 @@ export async function startProdServer() {
   });
 
   app.use("*", async (req, res, next) => {
+    const cookies = useCookies(req);
     if (isNotSupport(req)) {
       return next();
     }
@@ -43,7 +44,7 @@ export async function startProdServer() {
       );
 
       const helmetContext = {} as FilledContext;
-      const appHtml = await render(url, helmetContext);
+      const appHtml = await render(url, helmetContext, cookies);
       const { helmet } = helmetContext;
       const html = template
         .replace(`</head>`, `${helmet.title.toString()}</head>`)
