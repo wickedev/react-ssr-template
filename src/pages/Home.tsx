@@ -1,10 +1,10 @@
-import { encode } from 'js-base64';
+import { encode } from "js-base64";
 import { Suspense } from "react";
 import {
   graphql,
   PreloadedQuery,
   useFragment,
-  usePreloadedQuery
+  usePreloadedQuery,
 } from "react-relay";
 import { useSnapshot } from "valtio";
 import { Link, RouteProps } from "yarr";
@@ -39,7 +39,9 @@ export function HomePage({ preloaded }: HomePageProps) {
   const connectionID = fragmentData.posts.__id;
 
   return (
-    <Suspense fallback={"Loading..."}>
+    <Suspense
+      fallback={<div className="w-full m-8 text-center">Loading...</div>}
+    >
       {requestContext.accessToken && (
         <div className="flex justify-end px-4 pt-2">
           <Link to={`/post/new?cid=${encode(connectionID)}`}>New Post</Link>

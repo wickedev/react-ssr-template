@@ -3,9 +3,9 @@ import {
   graphql,
   PreloadedQuery,
   useMutation,
-  usePreloadedQuery,
+  usePreloadedQuery
 } from "react-relay";
-import { Redirect, RouteProps, useNavigation } from "yarr";
+import { RouteProps, useNavigation } from "yarr";
 import { Content } from "../components/Content";
 import { PostDeleteMutation } from "./__generated__/PostDeleteMutation.graphql";
 import { PostQuery } from "./__generated__/PostQuery.graphql";
@@ -35,7 +35,7 @@ export function PostPage({ preloaded }: PostPageProps) {
   `);
 
   if (isInFlight) {
-    return <div>Loading...</div>;
+    return <div className="w-full m-8 text-center">Deleting...</div>;
   }
 
   if (!data.post) {

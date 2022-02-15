@@ -61,6 +61,7 @@ export function InfinateScrollGrid<D>({
       data={data}
       endReached={endReached}
       itemContent={itemContent}
+      useWindowScroll={true}
       components={{
         Scroller: FancyScroller,
         List,
