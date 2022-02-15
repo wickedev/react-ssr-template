@@ -1,3 +1,4 @@
+import { decode } from "js-base64";
 import { useFragment } from "react-relay";
 import { graphql } from "relay-runtime";
 import { Link } from "yarr";
@@ -19,12 +20,13 @@ export const PostCard = ({ post }: { post: PostCardFragment_post$key }) => {
   const data = useFragment<PostCardFragment_post$key>(PostFragment, post);
 
   return (
-    <div className="bg-neutral-200 w-full p-4 h-32">
+    <div className="bg-neutral-200 w-full p-4 h-36">
       <Link to={`/post/${data.id}`}>
         <p>id: {data.id}</p>
+        <p>decode id: {decode(data.id)}</p>
         <p>title: {data.title}</p>
         <p>content: {data.content}</p>
-        <p>author: {data.author}</p>
+        <p>author: {data.author?.name}</p>
       </Link>
     </div>
   );

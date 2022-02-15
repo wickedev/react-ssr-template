@@ -47,6 +47,13 @@ export function createRoutes(
       },
     },
     {
+      path: "/post/new",
+      component: async () => {
+        const module = await import("./pages/NewPost");
+        return module.NewPostPage;
+      },
+    },
+    {
       path: "/post/:id",
       component: async () => {
         const module = await import("./pages/Post");

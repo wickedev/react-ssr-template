@@ -25,6 +25,7 @@ const schema = yup
 export function LoginPage() {
   const environment = useRelayEnvironment();
   const requestContext = useRequestContext();
+  const navigation = useNavigation();
   const [commit, isInFlight] = useMutation<LoginMutation>(graphql`
     mutation LoginMutation($email: String!, $password: String!) {
       login(email: $email, password: $password) {
@@ -45,7 +46,7 @@ export function LoginPage() {
   } = useForm<LoginInput>({
     resolver: yupResolver(schema),
   });
-  const navigation = useNavigation();
+  
   const onSubmit = (data: LoginInput) => {
     commit({
       variables: {

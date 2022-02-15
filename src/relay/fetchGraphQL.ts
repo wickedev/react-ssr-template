@@ -6,6 +6,7 @@ import {
   Variables
 } from "relay-runtime/lib/util/RelayRuntimeTypes";
 import { IRequestContext } from "./RelayEnvironment";
+import { decode } from 'js-base64';
 
 interface RequestInit {
   method: string;
@@ -77,6 +78,12 @@ export async function fetchGraphQL(
       operationName: request.name,
       variables,
     };
+  }
+
+  if (!context.isServer && variables.before) {
+    const id = decode(variables.before)
+    console.log(id);
+    // debugger
   }
 
   return await $fetch(

@@ -4215,6 +4215,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-base64@npm:^3.7.2":
+  version: 3.7.2
+  resolution: "js-base64@npm:3.7.2"
+  checksum: 573f28e9a27c3df60096d4d3f551bcb4fcb6d49161cf83396e9bad9b76f94736a70bb70b8808fe834dff2a388f76604ba09d6e153bbf181646e407720139fa5b
+  languageName: node
+  linkType: hard
+
 "js-cookie@npm:^3.0.1":
   version: 3.0.1
   resolution: "js-cookie@npm:3.0.1"
@@ -5938,6 +5945,7 @@ __metadata:
     graphql: ^16.3.0
     h3: ^0.3.9
     http-proxy-middleware: ^2.0.2
+    js-base64: ^3.7.2
     js-cookie: ^3.0.1
     matcher: ^5.0.0
     node-fetch: ^3.2.0

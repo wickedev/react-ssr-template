@@ -74,48 +74,42 @@ export class ClientRequestContext implements IRequestContext {
   refreshHandle?: number;
   isServer = false;
 
-  _accessToken: string | undefined;
-  _expiresIn: number | undefined;
-  _refreshToken: string | undefined;
-  _refreshExpiresIn: number | undefined;
+  accessToken: string | undefined;
+  expiresIn: number | undefined;
+  refreshToken: string | undefined;
+  refreshExpiresIn: number | undefined;
 
   constructor() {
-    this._accessToken = Cookies.get("accessToken");
-  }
-  get accessToken(): string | undefined {
-    return this._accessToken;
-  }
-  set accessToken(value: string | undefined) {
-    value ? Cookies.set("accessToken", value) : Cookies.remove("accessToken");
-    this._accessToken = value;
-  }
-  get expiresIn(): number | undefined {
-    return this._expiresIn;
-  }
-  set expiresIn(value: number | undefined) {
-    value
-      ? Cookies.set("expiresIn", value.toString())
-      : Cookies.remove("expiresIn");
-    this._expiresIn = value;
-  }
-  get refreshToken(): string | undefined {
-    return this._refreshToken;
-  }
-  set refreshToken(value: string | undefined) {
-    value ? Cookies.set("refreshToken", value) : Cookies.remove("refreshToken");
-    this._refreshToken = value;
-  }
-  get refreshExpiresIn(): number | undefined {
-    return this._refreshExpiresIn;
-  }
-  set refreshExpiresIn(value: number | undefined) {
-    value
-      ? Cookies.set("refreshExpiresIn", value.toString())
-      : Cookies.remove("refreshExpiresIn");
-    this._refreshExpiresIn = value;
+    this.accessToken = Cookies.get("accessToken");
+    this.expiresIn = Number(Cookies.get("expiresIn"));
+    this.refreshToken = Cookies.get("refreshToken");
+    this.refreshExpiresIn = Number(Cookies.get("refreshExpiresIn"));
   }
 
   onLoginSuccess(authInfo: AuthInfo): void {
+
+    Cookies.set("accessToken", authInfo.accessToken, {
+      expires: authInfo.expiresIn,
+      secure: true,
+      sameSite: 'Strict',
+    })
+
+    Cookies.set("expiresIn", authInfo.expiresIn.toString(), {
+      expires: authInfo.refreshExpiresIn,
+      sameSite: 'Strict',
+    })
+
+    Cookies.set("refreshToken", authInfo.refreshToken, {
+      expires: authInfo.refreshExpiresIn,
+      secure: true,
+      sameSite: 'Strict',
+    })
+
+    Cookies.set("refreshExpiresIn", authInfo.refreshExpiresIn.toString(), {
+      expires: authInfo.refreshExpiresIn,
+      sameSite: 'Strict',
+    })
+
     this.accessToken = authInfo.accessToken;
     this.expiresIn = authInfo.expiresIn;
     this.refreshToken = authInfo.refreshToken;
@@ -127,8 +121,6 @@ export class ClientRequestContext implements IRequestContext {
   }
 
   onLogout(): void {
-    console.log("onLogout");
-
     this.accessToken = undefined;
     this.expiresIn = undefined;
     this.refreshToken = undefined;

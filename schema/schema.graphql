@@ -35,7 +35,7 @@ type AuthResponseWithID {
   refreshToken: String!
   scope: String!
   tokenType: String!
-  userId: ID!
+  userId: ID
 }
 
 """Local Date Time type"""
@@ -46,7 +46,8 @@ scalar Long
 
 type Mutation {
   login(email: String!, password: String!): AuthResponseWithID!
-  postUpload(uploadedPost: UploadedPostInput!): Post
+  postDelete(id: ID!): ID!
+  postUpload(uploadedPost: UploadedPostInput!): UploadPost
   refresh(token: String!): AuthResponse!
   signUp(email: String!, name: String, password: String!): User!
 }
@@ -88,9 +89,13 @@ type Query {
   _service: _Service
   myInfo: User
   node(id: ID!): Node
-  post(id: ID!): Post!
-  posts(before: ID, last: Int): PostConnect!
+  post(id: ID!): Post
+  posts(after: ID, first: Int): PostConnect!
   users(before: ID, last: Int): UserConnect!
+}
+
+type UploadPost {
+  post: PostEdge!
 }
 
 input UploadedPostInput {

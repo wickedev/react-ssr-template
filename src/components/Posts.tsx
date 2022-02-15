@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { graphql, usePaginationFragment } from "react-relay";
 import { HomePostsQuery$data } from "../pages/__generated__/HomePostsQuery.graphql";
 import { InfinateScrollGrid } from "./InfinateScrollGrid";
@@ -9,15 +10,16 @@ interface PostsProps {
   postsRef: HomePostsQuery$data;
 }
 
-const PostsFragment = graphql`
+export const postsFragment = graphql`
   fragment PostsFragment_query on Query
   @argumentDefinitions(
-    last: { type: "Int", defaultValue: 10 }
-    before: { type: "ID", defaultValue: null }
+    first: { type: "Int", defaultValue: 10 }
+    after: { type: "ID", defaultValue: null }
   )
   @refetchable(queryName: "PostsQuery") {
-    posts(last: $last, before: $before)
+    posts(first: $first, after: $after)
       @connection(key: "HomePostConnectionFragment_posts") {
+      __id
       edges {
         node {
           ...PostCardFragment_post
@@ -34,15 +36,25 @@ const PostsFragment = graphql`
 
 export const Posts = ({ postsRef }: PostsProps) => {
   const pagination = usePaginationFragment<PostsQuery, PostsFragment_query$key>(
-    PostsFragment,
+    postsFragment,
     postsRef
   );
 
+  const edges = useMemo(() => {
+    return pagination.data.posts.edges.filter((edge) => edge.node != null);
+  }, [pagination.data.posts.edges]);
+
+  if (!edges.length) {
+    return <div className="w-full m-16 text-center">There is no posts. Be the first to write</div>;
+  }
+
   return (
     <InfinateScrollGrid
-      data={pagination.data.posts.edges}
-      endReached={pagination.loadPrevious}
-      hasMoreData={pagination.hasPrevious}
+      data={edges}
+      endReached={() => {
+        pagination.hasNext && pagination.loadNext(10);
+      }}
+      hasMoreData={pagination.hasNext}
       itemContent={(_, post) => {
         return <PostCard key={post.cursor} post={post.node} />;
       }}

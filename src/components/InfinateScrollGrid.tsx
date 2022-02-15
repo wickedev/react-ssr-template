@@ -1,10 +1,5 @@
 import React, { forwardRef, useRef } from "react";
-import {
-  ItemContent,
-  ItemProps,
-  Virtuoso,
-  VirtuosoHandle,
-} from "react-virtuoso";
+import { ItemContent, ItemProps, Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
 type InfinateScrollGridProps<D> = {
   data: readonly D[];
@@ -59,6 +54,7 @@ export function InfinateScrollGrid<D>({
   endReached,
 }: InfinateScrollGridProps<D>) {
   const virtuoso = useRef<VirtuosoHandle>(null);
+
   return (
     <Virtuoso
       ref={virtuoso}
@@ -71,7 +67,9 @@ export function InfinateScrollGrid<D>({
         Item,
         Footer: () => {
           return (
-            <div className="w-full p-2 text-center">{hasMoreData ? "Loading...": "No More Data"}</div>
+            <div className="w-full p-2 text-center">
+              {hasMoreData ? "Loading..." : "No More Data"}
+            </div>
           );
         },
       }}
