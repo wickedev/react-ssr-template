@@ -17,7 +17,7 @@ export async function render(
   cookies: Record<string, string>,
   res: ServerResponse
 ): Promise<string> {
-  const requestContext = proxy(new ServerRequestContext(cookies, res));
+  const requestContext = new ServerRequestContext(cookies, res);
 
   const relayEnvironment = createRelayEnvironment(requestContext, {});
 

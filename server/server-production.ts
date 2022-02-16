@@ -44,7 +44,7 @@ export async function startProdServer() {
       );
 
       const helmetContext = {} as FilledContext;
-      const appHtml = await render(url, helmetContext, cookies);
+      const appHtml = await render(url, helmetContext, cookies, res);
       const { helmet } = helmetContext;
       const html = template
         .replace(`</head>`, `${helmet?.title?.toString() ?? ""}</head>`)

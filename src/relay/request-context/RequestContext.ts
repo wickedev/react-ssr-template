@@ -27,14 +27,12 @@ export function refresh(
   relayEnvironment: RelayModernEnvironment
 ): Promise<void> {
   return new Promise((resolve) => {
-    console.log("refresh");
     if (!requestContext.refreshToken) {
       return resolve();
     }
 
     const accessToken = (requestContext.accessToken = undefined);
     const expiresIn = (requestContext.expiresIn = undefined);
-
     commitMutation<RequestContextRefreshMutation>(relayEnvironment, {
       mutation: graphql`
         mutation RequestContextRefreshMutation($token: String!) {

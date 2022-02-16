@@ -8,7 +8,7 @@ export class ServerRequestContext implements RequestContext {
 
   constructor(
     private readonly cookies: Record<string, string>,
-    private readonly res: ServerResponse
+    readonly res: ServerResponse
   ) {}
 
   get accessToken(): string | undefined {
@@ -59,7 +59,7 @@ export class ServerRequestContext implements RequestContext {
   setCookie(name: string, value: string | number, expireSec: number) {
     const v = typeof value === "string" ? value : value.toString();
     setCookie(this.res, name, v, {
-      expires: new Date(expireSec * 1_000),
+      expires: new Date(1_000),
       secure: true,
       sameSite: "strict",
     });
