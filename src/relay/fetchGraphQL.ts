@@ -1,11 +1,11 @@
-import { $fetch, FetchOptions } from "ohmyfetch";
+import { $fetch, FetchError, FetchOptions } from "ohmyfetch";
 import { UploadableMap } from "relay-runtime/lib/network/RelayNetworkTypes";
 import { RequestParameters } from "relay-runtime/lib/util/RelayConcreteNode";
 import {
   CacheConfig,
   Variables
 } from "relay-runtime/lib/util/RelayRuntimeTypes";
-import { IRequestContext } from "./RequestContext";
+import { RequestContext } from "./request-context/RequestContext";
 
 interface RequestInit {
   method: string;
@@ -15,7 +15,7 @@ interface RequestInit {
 }
 
 export async function fetchGraphQL(
-  context: IRequestContext,
+  context: RequestContext,
   request: RequestParameters,
   variables: Variables,
   cacheConfig: CacheConfig,
@@ -83,7 +83,13 @@ export async function fetchGraphQL(
     context.isServer ? `http://localhost:3000/graphql` : "/graphql",
     requestInit
   ).catch((error) => {
-    console.error(error);
+    console.log(error);
+
+    if (error instanceof FetchError) {
+      if (error.response?.status === 401) {
+        context.onLogout();
+      }
+    }
     return error?.message || "unkown error";
   });
 }

@@ -10,7 +10,7 @@ import { useSnapshot } from "valtio";
 import { Link, RouteProps } from "yarr";
 import { Posts, postsFragment } from "../components/Posts";
 import { PostsFragment_query$key } from "../components/__generated__/PostsFragment_query.graphql";
-import { useRequestContext } from "../relay/RequestContext";
+import { useAuth } from "../store/AuthContext";
 import { HomePostsQuery } from "./__generated__/HomePostsQuery.graphql";
 
 export interface HomePageProps extends RouteProps<"/"> {
@@ -25,7 +25,7 @@ export const homePostsQuery = graphql`
 `;
 
 export function HomePage({ preloaded }: HomePageProps) {
-  const requestContext = useSnapshot(useRequestContext());
+  const auth = useSnapshot(useAuth());
 
   const postsRef = usePreloadedQuery<HomePostsQuery>(
     homePostsQuery,
@@ -40,13 +40,13 @@ export function HomePage({ preloaded }: HomePageProps) {
 
   return (
     <Suspense
-      fallback={<div className="w-full m-8 text-center">Loading...</div>}
+      fallback={<div className="w-full m-8 text-center">Loading...?</div>}
     >
-      {requestContext.accessToken && (
+      {auth.isAuthentiated && (
         <div className="flex justify-end px-4 pt-2">
           <Link to={`/post/new?cid=${encode(connectionID)}`}>New Post</Link>
         </div>
-      )}
+      ) }
       <Posts postsRef={postsRef} />
     </Suspense>
   );

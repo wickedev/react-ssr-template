@@ -35,6 +35,7 @@ export const postsFragment = graphql`
 `;
 
 export const Posts = ({ postsRef }: PostsProps) => {
+  
   const pagination = usePaginationFragment<PostsQuery, PostsFragment_query$key>(
     postsFragment,
     postsRef

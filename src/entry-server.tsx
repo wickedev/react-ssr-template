@@ -1,3 +1,4 @@
+import type { ServerResponse } from "http";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { FilledContext } from "react-helmet-async";
@@ -6,17 +7,23 @@ import { proxy } from "valtio";
 import { createMemoryRouter } from "yarr";
 import { AppRoot } from "./AppRoot";
 import { createRelayEnvironment } from "./relay/RelayEnvironment";
-import { ServerRequestContext } from "./relay/RequestContext";
+import { ServerRequestContext } from "./relay/request-context/ServerRequestContext";
 import { createRoutes } from "./routes";
+import { Auth } from "./store/ClientAuth";
 
 export async function render(
   url: string,
   helmetContext: FilledContext,
-  cookies: Record<string, string>
+  cookies: Record<string, string>,
+  res: ServerResponse
 ): Promise<string> {
-  const requestContext = proxy(new ServerRequestContext(cookies));
+  const requestContext = proxy(new ServerRequestContext(cookies, res));
 
   const relayEnvironment = createRelayEnvironment(requestContext, {});
+
+  await requestContext.refresh(relayEnvironment);
+
+  const auth = proxy(new Auth(requestContext));
 
   const router = createMemoryRouter(
     {
@@ -28,13 +35,16 @@ export async function render(
   const element = createElement(AppRoot, {
     router,
     relayEnvironment,
-    requestContext,
+    auth,
     helmetContext,
   });
+
   await ssrPrepass(element);
 
   const relayInitialData = relayEnvironment.getStore().getSource();
+
   const appHtml = renderToString(element);
+
   const preloadedState = `<script>window.__PRELOADED_STATE__=${JSON.stringify(
     relayInitialData
   )}</script>`;

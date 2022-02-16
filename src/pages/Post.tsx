@@ -52,7 +52,6 @@ export function PostPage({ preloaded }: PostPageProps) {
       {JSON.stringify(data.post, null, 2)}
       <button
         onClick={() => {
-          console.log(data.post?.id);
           commit({
             variables: {
               id: data.post?.id!!,

@@ -6,14 +6,14 @@ import {
   RequestParameters,
   Store,
   UploadableMap,
-  Variables,
+  Variables
 } from "relay-runtime";
 import { RecordMap } from "relay-runtime/lib/store/RelayStoreTypes";
 import { fetchGraphQL } from "./fetchGraphQL";
-import { IRequestContext } from "./RequestContext";
+import { RequestContext } from "./request-context/RequestContext";
 
-function fetchRelay(context: IRequestContext) {
-  return (
+function fetchRelay(context: RequestContext) {
+  return async (
     request: RequestParameters,
     variables: Variables,
     cacheConfig: CacheConfig,
@@ -22,12 +22,19 @@ function fetchRelay(context: IRequestContext) {
     console.log(
       `fetching query ${request.name} with ${JSON.stringify(variables)}`
     );
-    return fetchGraphQL(context, request, variables, cacheConfig, uploadables);
+
+    return await fetchGraphQL(
+      context,
+      request,
+      variables,
+      cacheConfig,
+      uploadables
+    );
   };
 }
 
 export function createRelayEnvironment(
-  context: IRequestContext,
+  context: RequestContext,
   records?: RecordMap
 ) {
   const network = Network.create(fetchRelay(context));

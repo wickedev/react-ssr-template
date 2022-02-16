@@ -2,13 +2,13 @@ import { Environment, loadQuery } from "react-relay";
 import { RouteConfig, RouteParameters, RouteProps, RoutesConfig } from "yarr";
 import { homePostsQuery } from "./pages/Home";
 import { postQuery } from "./pages/Post";
-import { IRequestContext } from "./relay/RequestContext";
+import { RequestContext } from "./relay/request-context/RequestContext";
 
 export interface PreloadQueryRouteProps extends RouteProps<string> {
   preloaded: any;
 }
 export function createRoutes(
-  requestContext: IRequestContext,
+  requestContext: RequestContext,
   relayEnvironment: Environment
 ): RoutesConfig {
   return (<RouteConfig<string, string, PreloadQueryRouteProps>[]>[

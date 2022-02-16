@@ -47,9 +47,9 @@ export async function startProdServer() {
       const appHtml = await render(url, helmetContext, cookies);
       const { helmet } = helmetContext;
       const html = template
-        .replace(`</head>`, `${helmet.title.toString()}</head>`)
-        .replace(`</head>`, `${helmet.link.toString()}</head>`)
-        .replace(`</head>`, `${helmet.meta.toString()}</head>`)
+        .replace(`</head>`, `${helmet?.title?.toString() ?? ""}</head>`)
+        .replace(`</head>`, `${helmet?.link?.toString() ?? ""}</head>`)
+        .replace(`</head>`, `${helmet?.meta?.toString() ?? ""}</head>`)
         .replace(`<!--app-html-->`, appHtml);
       await send(res, html, "text/html");
     } catch (e) {

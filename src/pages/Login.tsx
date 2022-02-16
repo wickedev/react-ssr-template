@@ -4,7 +4,7 @@ import { graphql, useMutation, useRelayEnvironment } from "react-relay";
 import { Link, useNavigation } from "yarr";
 import * as yup from "yup";
 import { Content } from "../components/Content";
-import { useRequestContext } from "../relay/RequestContext";
+import { useAuth } from "../store/AuthContext";
 import { LoginMutation } from "./__generated__/LoginMutation.graphql";
 
 interface LoginInput {
@@ -24,7 +24,7 @@ const schema = yup
 
 export function LoginPage() {
   const environment = useRelayEnvironment();
-  const requestContext = useRequestContext();
+  const auth = useAuth();
   const navigation = useNavigation();
   const [commit, isInFlight] = useMutation<LoginMutation>(graphql`
     mutation LoginMutation($email: String!, $password: String!) {
@@ -34,6 +34,7 @@ export function LoginPage() {
         expiresIn
         refreshToken
         refreshExpiresIn
+        scope
       }
     }
   `);
@@ -46,7 +47,7 @@ export function LoginPage() {
   } = useForm<LoginInput>({
     resolver: yupResolver(schema),
   });
-  
+
   const onSubmit = (data: LoginInput) => {
     commit({
       variables: {
@@ -56,7 +57,7 @@ export function LoginPage() {
         environment.commitUpdate((store) => {
           store.get(response.login.userId)?.invalidateRecord();
         });
-        requestContext.onLoginSuccess(response.login);
+        auth.onLoginSuccess(response.login, environment);
         navigation.push("/");
       },
       onError: (error) => {

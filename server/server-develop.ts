@@ -9,7 +9,7 @@ import {
   isNotSupport,
   proxyMiddleware,
   resolveApp,
-  root,
+  root
 } from "./utils";
 
 export async function startDevServer() {
@@ -80,23 +80,24 @@ export async function startDevServer() {
       // 4. 앱의 HTML을 렌더링합니다.
       //    이는 entry-server.js에서 내보낸(Export) `render` 함수가
       //    ReactDOMServer.renderToString()과 같은 적절한 프레임워크의 SSR API를 호출한다고 가정합니다.
-      const appHtml = await render(url, helmetContext, cookies);
+      const appHtml = await render(url, helmetContext, cookies, res);
 
       const { helmet } = helmetContext;
 
       // 5. 렌더링된 HTML을 템플릿에 주입합니다.
       const html = template
         .replace(`<!--app-title-->`, "React SSR")
-        .replace(`</head>`, `${helmet.title.toString()}</head>`)
-        .replace(`</head>`, `${helmet.link.toString()}</head>`)
-        .replace(`</head>`, `${helmet.meta.toString()}</head>`)
+        .replace(`</head>`, `${helmet?.title?.toString() ?? ""}</head>`)
+        .replace(`</head>`, `${helmet?.link?.toString() ?? ""}</head>`)
+        .replace(`</head>`, `${helmet?.meta?.toString() ?? ""}</head>`)
         .replace(`</head>`, `${collectCssUrls(modules)}</head>`)
         .replace(`<!--app-html-->`, appHtml);
 
       // 6. 렌더링된 HTML을 응답으로 전송합니다.
       await send(res, html, "text/html");
     } catch (e) {
-      console.error(e);
+      console.log(e);
+
       // 만약 오류가 발생된다면, Vite는 스택트레이스(Stacktrace)를 수정하여
       // 오류가 실제 코드에 매핑되도록 재구성합니다.
       viteDevServer.ssrFixStacktrace(e as Error);

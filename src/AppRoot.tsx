@@ -1,42 +1,45 @@
 import { StrictMode } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { FilledContext, Helmet, HelmetProvider } from "react-helmet-async";
 import { RelayEnvironmentProvider } from "react-relay";
 import "regenerator-runtime/runtime";
 import { Environment } from "relay-runtime/lib/store/RelayStoreTypes";
-import { proxy } from "valtio";
 import { RouterProps, RouterProvider } from "yarr";
 import { App } from "./App";
 import { Layout } from "./components/Layout";
 import "./index.css";
-import { IRequestContext, RequestContext } from "./relay/RequestContext";
+import { IAuth } from "./store/Auth";
+import { AuthContext } from "./store/AuthContext";
 
 export function AppRoot({
   router,
   relayEnvironment,
-  requestContext,
+  auth,
   helmetContext,
 }: {
   router: RouterProps;
   relayEnvironment: Environment;
-  requestContext: IRequestContext;
+  auth: IAuth;
   helmetContext?: FilledContext;
 }) {
   return (
     <StrictMode>
-      <RequestContext.Provider value={requestContext}>
+      <AuthContext.Provider value={auth}>
         <HelmetProvider context={helmetContext}>
           <RelayEnvironmentProvider environment={relayEnvironment}>
-            <RouterProvider router={router}>
-              <Helmet>
-                <title>Hello Relay</title>
-              </Helmet>
-              <Layout>
-                <App />
-              </Layout>
-            </RouterProvider>
+            <ErrorBoundary fallbackRender={(props) => <pre>{JSON.stringify(props.error, null, 4)}</pre>}>
+              <RouterProvider router={router}>
+                <Helmet>
+                  <title>Hello Relay</title>
+                </Helmet>
+                <Layout>
+                  <App />
+                </Layout>
+              </RouterProvider>
+            </ErrorBoundary>
           </RelayEnvironmentProvider>
         </HelmetProvider>
-      </RequestContext.Provider>
+      </AuthContext.Provider>
     </StrictMode>
   );
 }

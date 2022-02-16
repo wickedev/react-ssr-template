@@ -1,11 +1,11 @@
-import { useRequestContext } from "../relay/RequestContext";
+import { useAuth } from "../store/AuthContext";
 
 export function Logout() {
-  const requestContext = useRequestContext();
+  const auth = useAuth();
 
   return (
     <button
-      onClick={requestContext.onLogout.bind(requestContext)}
+      onClick={auth.onLogout.bind(auth)}
     >
       Logout
     </button>

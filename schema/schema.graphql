@@ -35,7 +35,7 @@ type AuthResponseWithID {
   refreshToken: String!
   scope: String!
   tokenType: String!
-  userId: ID
+  userId: String!
 }
 
 """Local Date Time type"""

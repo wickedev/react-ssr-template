@@ -1,12 +1,12 @@
 import { MouseEvent } from "react";
 import { useSnapshot } from "valtio";
 import { Link } from "yarr";
-import { useRequestContext } from "../relay/RequestContext";
+import { useAuth } from "../store/AuthContext";
 import { Logout } from "./Logout";
 import { UserInfo } from "./UserInfo";
 
 export const Navbar = () => {
-  const requestContext = useSnapshot(useRequestContext());
+  const auth = useSnapshot(useAuth());
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     console.log(`Link clicked: ${(e.target as any).href}`);
@@ -27,7 +27,7 @@ export const Navbar = () => {
               Non existent route
             </Link>
           </span>
-          {requestContext.accessToken ? (
+          {auth.isAuthentiated ? (
             <span className="space-x-4">
               <UserInfo />
               <Logout />

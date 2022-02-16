@@ -27,7 +27,6 @@ export const proxyMiddleware = proxy({
   target: REMOTE_SERVER,
   changeOrigin: true,
   autoRewrite: true,
-  logLevel: "debug",
   pathRewrite: {
     "^/api/graphql": "/graphql",
   },
