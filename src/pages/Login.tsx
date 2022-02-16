@@ -22,7 +22,7 @@ const schema = yup
   })
   .required();
 
-export function LoginPage() {
+export default function LoginPage() {
   const environment = useRelayEnvironment();
   const auth = useAuth();
   const navigation = useNavigation();

@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { FilledContext, Helmet, HelmetProvider } from "react-helmet-async";
 import { RelayEnvironmentProvider } from "react-relay";
@@ -23,7 +22,6 @@ export function AppRoot({
   helmetContext?: FilledContext;
 }) {
   return (
-    <StrictMode>
       <AuthContext.Provider value={auth}>
         <HelmetProvider context={helmetContext}>
           <RelayEnvironmentProvider environment={relayEnvironment}>
@@ -40,6 +38,5 @@ export function AppRoot({
           </RelayEnvironmentProvider>
         </HelmetProvider>
       </AuthContext.Provider>
-    </StrictMode>
   );
 }

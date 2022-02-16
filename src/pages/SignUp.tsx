@@ -21,7 +21,7 @@ const schema = yup
   })
   .required();
 
-export function SignUpPage() {
+export default function SignUpPage() {
   const [commit, isInFlight] = useMutation<SignUpMutation>(graphql`
     mutation SignUpMutation(
       $email: String!

@@ -1,12 +1,30 @@
+import loadable from "@loadable/component";
+import React from "react";
+import { ComponentType, memo } from "react";
 import { Environment, loadQuery } from "react-relay";
 import { RouteConfig, RouteParameters, RouteProps, RoutesConfig } from "yarr";
+import { Progress } from "./components/Progress";
+import { RequestContext } from "./lib/request-context/RequestContext";
 import { homePostsQuery } from "./pages/Home";
 import { postQuery } from "./pages/Post";
-import { RequestContext } from "./relay/request-context/RequestContext";
 
 export interface PreloadQueryRouteProps extends RouteProps<string> {
   preloaded: any;
 }
+
+function page<Props>(
+  factory: () => Promise<{ default: ComponentType<Props> }>
+): () => Promise<ComponentType<Props>> {
+  return async () => {
+    if (typeof window === "undefined") {
+      return (await factory()).default;
+    }
+    return memo(loadable(factory, {
+      fallback: React.createElement(Progress)
+    }) as any);
+  };
+}
+
 export function createRoutes(
   requestContext: RequestContext,
   relayEnvironment: Environment
@@ -14,51 +32,33 @@ export function createRoutes(
   return (<RouteConfig<string, string, PreloadQueryRouteProps>[]>[
     {
       path: "/",
-      component: async () => {
-        const module = await import("./pages/Home");
-        return module.HomePage;
-      },
+      component: page(() => import("./pages/Home")),
       preload: () => ({
         query: loadQuery(relayEnvironment, homePostsQuery, {}),
       }),
     },
     {
       path: "/about",
-      component: async () => {
-        const module = await import("./pages/About");
-        return module.AboutPage;
-      },
+      component: page(() => import("./pages/About")),
     },
     {
       path: "/login",
-      component: async () => {
-        const module = await import("./pages/Login");
-        return module.LoginPage;
-      },
+      component: page(() => import("./pages/Login")),
       redirectRules: () => {
         return requestContext.accessToken ? "/" : null;
       },
     },
     {
       path: "/sign-up",
-      component: async () => {
-        const module = await import("./pages/SignUp");
-        return module.SignUpPage;
-      },
+      component: page(() => import("./pages/SignUP")),
     },
     {
       path: "/post/new",
-      component: async () => {
-        const module = await import("./pages/NewPost");
-        return module.NewPostPage;
-      },
+      component: page(() => import("./pages/NewPost")),
     },
     {
       path: "/post/:id",
-      component: async () => {
-        const module = await import("./pages/Post");
-        return module.PostPage;
-      },
+      component: page(() => import("./pages/Post")),
       preload: (routeParameters: RouteParameters<"/post/:id">) => {
         return {
           query: loadQuery(relayEnvironment, postQuery, {
@@ -69,10 +69,7 @@ export function createRoutes(
     },
     {
       path: "*",
-      component: async () => {
-        const module = await import("./pages/NotFound");
-        return module.NotFoundPage;
-      },
+      component: page(() => import("./pages/NotFound")),
     },
   ]) as any;
 }

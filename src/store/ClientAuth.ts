@@ -1,6 +1,6 @@
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
 import { ref } from "valtio";
-import { RequestContext } from "../relay/request-context/RequestContext";
+import { RequestContext } from "../lib/request-context/RequestContext";
 import { AuthInfo, hasRole, IAuth } from "./Auth";
 
 export class Auth implements IAuth {

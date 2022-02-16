@@ -9,6 +9,7 @@ import {
 import { useSnapshot } from "valtio";
 import { Link, RouteProps } from "yarr";
 import { Posts, postsFragment } from "../components/Posts";
+import { Progress } from "../components/Progress";
 import { PostsFragment_query$key } from "../components/__generated__/PostsFragment_query.graphql";
 import { useAuth } from "../store/AuthContext";
 import { HomePostsQuery } from "./__generated__/HomePostsQuery.graphql";
@@ -24,7 +25,9 @@ export const homePostsQuery = graphql`
   }
 `;
 
-export function HomePage({ preloaded }: HomePageProps) {
+export default function HomePage({ preloaded }: HomePageProps) {
+  console.log("HomePage");
+
   const auth = useSnapshot(useAuth());
 
   const postsRef = usePreloadedQuery<HomePostsQuery>(
@@ -39,14 +42,12 @@ export function HomePage({ preloaded }: HomePageProps) {
   const connectionID = fragmentData.posts.__id;
 
   return (
-    <Suspense
-      fallback={<div className="w-full m-8 text-center">Loading...?</div>}
-    >
+    <Suspense fallback={<Progress />}>
       {auth.isAuthentiated && (
         <div className="flex justify-end px-4 pt-2">
           <Link to={`/post/new?cid=${encode(connectionID)}`}>New Post</Link>
         </div>
-      ) }
+      )}
       <Posts postsRef={postsRef} />
     </Suspense>
   );

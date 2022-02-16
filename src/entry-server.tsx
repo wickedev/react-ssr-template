@@ -6,8 +6,8 @@ import ssrPrepass from "react-ssr-prepass";
 import { proxy } from "valtio";
 import { createMemoryRouter } from "yarr";
 import { AppRoot } from "./AppRoot";
-import { createRelayEnvironment } from "./relay/RelayEnvironment";
-import { ServerRequestContext } from "./relay/request-context/ServerRequestContext";
+import { createRelayEnvironment } from "./lib/RelayEnvironment";
+import { ServerRequestContext } from "./lib/request-context/ServerRequestContext";
 import { createRoutes } from "./routes";
 import { Auth } from "./store/ClientAuth";
 

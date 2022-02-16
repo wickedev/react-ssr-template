@@ -1,5 +1,5 @@
 import { Content } from "../components/Content";
 
-export function NotFoundPage() {
+export default function NotFoundPage() {
   return <Content>NotFound</Content>;
 }

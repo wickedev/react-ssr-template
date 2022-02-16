@@ -25,7 +25,7 @@ export const postQuery = graphql`
     }
   }
 `;
-export function PostPage({ preloaded }: PostPageProps) {
+export default function PostPage({ preloaded }: PostPageProps) {
   const data = usePreloadedQuery<PostQuery>(postQuery, preloaded.query);
   const navigation = useNavigation();
   const [commit, isInFlight] = useMutation<PostDeleteMutation>(graphql`

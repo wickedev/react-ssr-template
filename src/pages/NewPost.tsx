@@ -1,11 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { decode } from "js-base64";
 import { useForm } from "react-hook-form";
 import { graphql, useMutation } from "react-relay";
 import { useNavigation } from "yarr";
 import * as yup from "yup";
 import { Content } from "../components/Content";
 import { NewPostMutation } from "./__generated__/NewPostMutation.graphql";
-import { decode } from "js-base64";
 interface NewPostInput {
   title: string;
   content: string;
@@ -23,7 +23,7 @@ interface NewPostProps {
     cid: string;
   };
 }
-export function NewPostPage({ search: { cid } }: NewPostProps) {
+export default function NewPostPage({ search: { cid } }: NewPostProps) {
   const navigation = useNavigation();
   const {
     register,
