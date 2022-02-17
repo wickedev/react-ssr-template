@@ -1,9 +1,9 @@
 import { ComponentType, memo } from "react";
 import { Environment, loadQuery } from "react-relay";
 import { RouteConfig, RouteParameters, RouteProps, RoutesConfig } from "yarr";
-import { RequestContext } from "./lib/request-context/RequestContext";
 import { homePostsQuery } from "./pages/Home";
 import { postQuery } from "./pages/Post";
+import { IAuth } from "./store/Auth";
 
 export interface PreloadQueryRouteProps extends RouteProps<string> {
   preloaded: any;
@@ -18,7 +18,7 @@ function page<Props>(
   };
 }
 export function createRoutes(
-  requestContext: RequestContext,
+  auth: IAuth,
   relayEnvironment: Environment
 ): RoutesConfig {
   return (<RouteConfig<string, string, PreloadQueryRouteProps>[]>[
@@ -37,7 +37,7 @@ export function createRoutes(
       path: "/login",
       component: page(() => import("./pages/Login")),
       redirectRules: () => {
-        return requestContext.accessToken ? "/" : null;
+        return auth.isAuthentiated ? "/" : null;
       },
     },
     {

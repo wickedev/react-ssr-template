@@ -27,7 +27,7 @@ export async function render(
 
   const router = createMemoryRouter(
     {
-      routes: createRoutes(requestContext, relayEnvironment),
+      routes: createRoutes(auth, relayEnvironment),
     },
     { initialEntries: [url] }
   );

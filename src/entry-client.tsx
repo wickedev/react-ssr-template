@@ -18,7 +18,7 @@ requestContext.scheduledRefresh(relayEnvironment);
 const auth = proxy(new Auth(requestContext));
 
 const router = createBrowserRouter({
-  routes: createRoutes(requestContext, relayEnvironment),
+  routes: createRoutes(auth, relayEnvironment),
   awaitComponent: true,
 });
 
