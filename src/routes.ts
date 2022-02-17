@@ -1,9 +1,6 @@
-import loadable from "@loadable/component";
-import React from "react";
 import { ComponentType, memo } from "react";
 import { Environment, loadQuery } from "react-relay";
 import { RouteConfig, RouteParameters, RouteProps, RoutesConfig } from "yarr";
-import { Progress } from "./components/Progress";
 import { RequestContext } from "./lib/request-context/RequestContext";
 import { homePostsQuery } from "./pages/Home";
 import { postQuery } from "./pages/Post";
@@ -16,15 +13,10 @@ function page<Props>(
   factory: () => Promise<{ default: ComponentType<Props> }>
 ): () => Promise<ComponentType<Props>> {
   return async () => {
-    if (typeof window === "undefined") {
-      return (await factory()).default;
-    }
-    return memo(loadable(factory, {
-      fallback: React.createElement(Progress)
-    }) as any);
+    const Component = (await factory()).default;
+    return memo(Component) as unknown as ComponentType<Props>;
   };
 }
-
 export function createRoutes(
   requestContext: RequestContext,
   relayEnvironment: Environment

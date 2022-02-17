@@ -49,6 +49,8 @@ export const Posts = ({ postsRef }: PostsProps) => {
     return <div className="w-full m-16 text-center">There is no posts. Be the first to write</div>;
   }
 
+  pagination.isLoadingNext
+
   return (
     <InfinateScrollGrid
       data={edges}
@@ -56,6 +58,7 @@ export const Posts = ({ postsRef }: PostsProps) => {
         pagination.hasNext && pagination.loadNext(10);
       }}
       hasMoreData={pagination.hasNext}
+      isLoadingNext={pagination.isLoadingNext}
       itemContent={(_, post) => {
         return <PostCard key={post.cursor} post={post.node} />;
       }}

@@ -26,8 +26,6 @@ export const homePostsQuery = graphql`
 `;
 
 export default function HomePage({ preloaded }: HomePageProps) {
-  console.log("HomePage");
-
   const auth = useSnapshot(useAuth());
 
   const postsRef = usePreloadedQuery<HomePostsQuery>(
