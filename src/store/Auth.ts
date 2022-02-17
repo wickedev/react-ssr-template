@@ -1,6 +1,6 @@
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
 
-export interface IAuth {
+export interface Auth {
   isAuthentiated: boolean;
   scope: string;
   onLoginSuccess(info: AuthInfo, environment: RelayModernEnvironment): void;

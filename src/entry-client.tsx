@@ -5,7 +5,7 @@ import { AppRoot } from "./AppRoot";
 import { createRelayEnvironment } from "./lib/RelayEnvironment";
 import { ClientRequestContext } from "./lib/request-context/ClientRequestContext";
 import { createRoutes } from "./routes";
-import { Auth } from "./store/ClientAuth";
+import { AuthStore } from "./store/AuthStore";
 
 const requestContext = new ClientRequestContext();
 const relayEnvironment = createRelayEnvironment(
@@ -15,7 +15,7 @@ const relayEnvironment = createRelayEnvironment(
 
 requestContext.scheduledRefresh(relayEnvironment);
 
-const auth = proxy(new Auth(requestContext));
+const auth = proxy(new AuthStore(requestContext));
 
 const router = createBrowserRouter({
   routes: createRoutes(auth, relayEnvironment),

@@ -3,7 +3,7 @@ import { Environment, loadQuery } from "react-relay";
 import { RouteConfig, RouteParameters, RouteProps, RoutesConfig } from "yarr";
 import { homePostsQuery } from "./pages/Home";
 import { postQuery } from "./pages/Post";
-import { IAuth } from "./store/Auth";
+import { Auth } from "./store/Auth";
 
 export interface PreloadQueryRouteProps extends RouteProps<string> {
   preloaded: any;
@@ -18,7 +18,7 @@ function page<Props>(
   };
 }
 export function createRoutes(
-  auth: IAuth,
+  auth: Auth,
   relayEnvironment: Environment
 ): RoutesConfig {
   return (<RouteConfig<string, string, PreloadQueryRouteProps>[]>[

@@ -1,6 +1,5 @@
 import { decode } from "js-base64";
-import { useFragment } from "react-relay";
-import { graphql } from "relay-runtime";
+import { graphql, useFragment } from "react-relay";
 import { Link } from "yarr";
 import { PostCardFragment_post$key } from "./__generated__/PostCardFragment_post.graphql";
 

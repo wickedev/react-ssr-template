@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { IAuth } from "./Auth";
+import { Auth } from "./Auth";
 
-export const AuthContext = React.createContext<IAuth>({
+export const AuthContext = React.createContext<Auth>({
   isAuthentiated: false,
   scope: "",
   onLoginSuccess: () => {},

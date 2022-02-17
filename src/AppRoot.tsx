@@ -7,7 +7,7 @@ import { RouterProps, RouterProvider } from "yarr";
 import { App } from "./App";
 import { Layout } from "./components/Layout";
 import "./index.css";
-import { IAuth } from "./store/Auth";
+import { Auth } from "./store/Auth";
 import { AuthContext } from "./store/AuthContext";
 
 export function AppRoot({
@@ -18,7 +18,7 @@ export function AppRoot({
 }: {
   router: RouterProps;
   relayEnvironment: Environment;
-  auth: IAuth;
+  auth: Auth;
   helmetContext?: FilledContext;
 }) {
   return (

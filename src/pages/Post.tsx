@@ -3,7 +3,7 @@ import {
   graphql,
   PreloadedQuery,
   useMutation,
-  usePreloadedQuery
+  usePreloadedQuery,
 } from "react-relay";
 import { RouteProps, useNavigation } from "yarr";
 import { Content } from "../components/Content";
@@ -39,9 +39,7 @@ export default function PostPage({ preloaded }: PostPageProps) {
   }
 
   if (!data.post) {
-    return <div>
-      No Data
-    </div>;
+    return <div>No Data</div>;
   }
 
   return (

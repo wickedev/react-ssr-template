@@ -9,7 +9,7 @@ import { AppRoot } from "./AppRoot";
 import { createRelayEnvironment } from "./lib/RelayEnvironment";
 import { ServerRequestContext } from "./lib/request-context/ServerRequestContext";
 import { createRoutes } from "./routes";
-import { Auth } from "./store/ClientAuth";
+import { AuthStore } from "./store/AuthStore";
 
 export async function render(
   url: string,
@@ -23,7 +23,7 @@ export async function render(
 
   await requestContext.refresh(relayEnvironment);
 
-  const auth = proxy(new Auth(requestContext));
+  const auth = proxy(new AuthStore(requestContext));
 
   const router = createMemoryRouter(
     {
