@@ -100,7 +100,7 @@ type Query {
   myInfo: User
   node(id: ID!): Node
   post(id: ID!): Post
-  posts(after: ID, first: Int, orderBy: [OrderInput!]): PostConnect!
+  posts(after: ID, first: Int, orderBy: [OrderInput!], search: String): PostConnect!
   users(before: ID, last: Int): UserConnect!
 }
 

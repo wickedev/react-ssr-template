@@ -1,5 +1,5 @@
 import { encode } from "js-base64";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import {
   graphql,
   PreloadedQuery,
@@ -28,6 +28,8 @@ export const homePostsQuery = graphql`
 export default function HomePage({ preloaded }: HomePageProps) {
   const auth = useSnapshot(useAuth());
 
+  const [search, setSearch] = useState("");
+
   const postsRef = usePreloadedQuery<HomePostsQuery>(
     homePostsQuery,
     preloaded.query
@@ -40,13 +42,23 @@ export default function HomePage({ preloaded }: HomePageProps) {
   const connectionID = fragmentData.posts.__id;
 
   return (
-    <Suspense fallback={<Progress />}>
+    <div>
       {auth.isAuthentiated && (
         <div className="flex justify-end px-4 pt-2">
           <Link to={`/post/new?cid=${encode(connectionID)}`}>New Post</Link>
         </div>
       )}
-      <Posts postsRef={postsRef} />
-    </Suspense>
+      <div className="mx-8 mt-4">
+        <input
+          className="font-sans block text-sm leading-5 w-full py-2 px-3 border-2 border-slate-600 text-slate-500 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-slate-200"
+          placeholder="Search"
+          type="text"
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+      <Suspense fallback={<Progress />}>
+        <Posts postsRef={postsRef} search={search} />
+      </Suspense>
+    </div>
   );
 }
