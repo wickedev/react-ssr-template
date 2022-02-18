@@ -15,9 +15,13 @@ export const postsFragment = graphql`
   @argumentDefinitions(
     first: { type: "Int", defaultValue: 10 }
     after: { type: "ID", defaultValue: null }
+    orderBy: {
+      type: "[OrderInput!]"
+      defaultValue: [{ property: "id", direction: DESC }]
+    }
   )
   @refetchable(queryName: "PostsQuery") {
-    posts(first: $first, after: $after)
+    posts(first: $first, after: $after, orderBy: $orderBy)
       @connection(key: "HomePostConnectionFragment_posts") {
       __id
       edges {
@@ -35,7 +39,6 @@ export const postsFragment = graphql`
 `;
 
 export const Posts = ({ postsRef }: PostsProps) => {
-  
   const pagination = usePaginationFragment<PostsQuery, PostsFragment_query$key>(
     postsFragment,
     postsRef
@@ -46,10 +49,14 @@ export const Posts = ({ postsRef }: PostsProps) => {
   }, [pagination.data.posts.edges]);
 
   if (!edges.length) {
-    return <div className="w-full m-16 text-center">There is no posts. Be the first to write</div>;
+    return (
+      <div className="w-full m-16 text-center">
+        There is no posts. Be the first to write
+      </div>
+    );
   }
 
-  pagination.isLoadingNext
+  pagination.isLoadingNext;
 
   return (
     <InfinateScrollGrid

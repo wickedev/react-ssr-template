@@ -3,6 +3,7 @@ import { Environment, loadQuery } from "react-relay";
 import { RouteConfig, RouteParameters, RouteProps, RoutesConfig } from "yarr";
 import { homePostsQuery } from "./pages/Home";
 import { postQuery } from "./pages/Post";
+import { HomePostsQuery } from "./pages/__generated__/HomePostsQuery.graphql";
 import { Auth } from "./store/Auth";
 
 export interface PreloadQueryRouteProps extends RouteProps<string> {
@@ -26,7 +27,7 @@ export function createRoutes(
       path: "/",
       component: page(() => import("./pages/Home")),
       preload: () => ({
-        query: loadQuery(relayEnvironment, homePostsQuery, {}),
+        query: loadQuery<HomePostsQuery>(relayEnvironment, homePostsQuery, {}),
       }),
     },
     {

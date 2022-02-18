@@ -38,6 +38,11 @@ type AuthResponseWithID {
   userId: String!
 }
 
+enum Direction {
+  ASC
+  DESC
+}
+
 """Local Date Time type"""
 scalar LocalDateTime
 
@@ -54,6 +59,11 @@ type Mutation {
 
 interface Node {
   id: ID!
+}
+
+input OrderInput {
+  direction: Direction
+  property: String!
 }
 
 type PageInfo {
@@ -90,7 +100,7 @@ type Query {
   myInfo: User
   node(id: ID!): Node
   post(id: ID!): Post
-  posts(after: ID, first: Int): PostConnect!
+  posts(after: ID, first: Int, orderBy: [OrderInput!]): PostConnect!
   users(before: ID, last: Int): UserConnect!
 }
 
