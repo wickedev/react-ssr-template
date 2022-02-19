@@ -29,12 +29,18 @@ export default function LoginPage() {
   const [commit, isInFlight] = useMutation<LoginMutation>(graphql`
     mutation LoginMutation($email: String!, $password: String!) {
       login(email: $email, password: $password) {
-        userId
-        accessToken
-        expiresIn
-        refreshToken
-        refreshExpiresIn
-        scope
+        __typename
+        ... on AuthResponseWithID {
+          userId
+          accessToken
+          expiresIn
+          refreshToken
+          refreshExpiresIn
+          scope
+        }
+        ... on InvalidEmailOrPasswordError {
+          message
+        }
       }
     }
   `);
@@ -54,19 +60,19 @@ export default function LoginPage() {
         ...data,
       },
       onCompleted: (response, errors) => {
-        environment.commitUpdate((store) => {
-          store.get(response.login.userId)?.invalidateRecord();
-        });
-        auth.onLoginSuccess(response.login, environment);
-        navigation.push("/");
-      },
-      onError: (error) => {
-        setError("password", {
-          message: (error as any).source.errors
-            .flatMap((e: any) => Object.values(e.extensions))
-            .map((e: any) => e.message)
-            .join(", "),
-        });
+        if (response.login.__typename === "AuthResponseWithID") {
+          environment.commitUpdate((store) => {
+            store.getRoot().getLinkedRecord("myInfo")?.invalidateRecord();
+          });
+          auth.onLoginSuccess(response.login, environment);
+          navigation.push("/");
+        } else if (
+          response.login.__typename === "InvalidEmailOrPasswordError"
+        ) {
+          setError("password", {
+            message: response.login.message,
+          });
+        }
       },
     });
   };

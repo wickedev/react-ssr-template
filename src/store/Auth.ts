@@ -1,6 +1,7 @@
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
 
 export interface Auth {
+  userId?: string;
   isAuthentiated: boolean;
   scope: string;
   onLoginSuccess(info: AuthInfo, environment: RelayModernEnvironment): void;
@@ -9,6 +10,7 @@ export interface Auth {
 }
 
 export interface AuthInfo {
+  userId: string;
   accessToken: string;
   expiresIn: number;
   refreshToken: string;

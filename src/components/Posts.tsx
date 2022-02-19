@@ -21,13 +21,13 @@ export const postsFragment = graphql`
       type: "[OrderInput!]"
       defaultValue: [{ property: "id", direction: DESC }]
     }
-    search: { type: "String", defaultValue: null }
+    search: { type: "String", defaultValue: "" }
   )
   @refetchable(queryName: "PostsQuery") {
     posts(first: $first, after: $after, orderBy: $orderBy, search: $search)
       @connection(
         key: "HomePostConnectionFragment_posts"
-        filters: ["orderBy", "search"]
+        filters: ["search"]
       ) {
       __id
       edges {
@@ -52,17 +52,14 @@ export const Posts = ({ postsRef, search }: PostsProps) => {
 
   const searching = useMemo(
     () =>
-      debounce(
-        (search: string) => {
-          pagination.refetch({
-            first: 10,
-            after: null,
-            orderBy: [{ property: "id", direction: "DESC" }],
-            search: search,
-          });
-        },
-        300,
-      ),
+      debounce((search: string) => {
+        pagination.refetch({
+          first: 10,
+          after: null,
+          orderBy: [{ property: "id", direction: "DESC" }],
+          search: search,
+        });
+      }, 300),
     []
   );
 

@@ -6,6 +6,7 @@ import { MILLS_PER_SECOND, refresh, RequestContext } from "./RequestContext";
 export class ClientRequestContext implements RequestContext {
   isServer = false;
 
+  userId?: string;
   accessToken?: string;
   expiresIn?: number;
   refreshToken?: string;
@@ -13,6 +14,7 @@ export class ClientRequestContext implements RequestContext {
   refreshHandle?: NodeJS.Timeout;
 
   constructor() {
+    this.userId = Cookies.get("userId");
     this.accessToken = Cookies.get("accessToken");
     this.expiresIn = Number(Cookies.get("expiresIn"));
     this.refreshToken = Cookies.get("refreshToken");
@@ -20,8 +22,10 @@ export class ClientRequestContext implements RequestContext {
     const now = new Date().getTime();
 
     if (now > this.expiresIn * MILLS_PER_SECOND) {
+      this.userId = undefined
       this.accessToken = undefined;
       this.expiresIn = undefined;
+      Cookies.remove("userId");
       Cookies.remove("accessToken");
       Cookies.remove("expiresIn");
     }
@@ -47,6 +51,7 @@ export class ClientRequestContext implements RequestContext {
     authInfo: AuthInfo,
     relayEnvironment: RelayModernEnvironment
   ): void {
+    setCookie("userId", authInfo.userId, authInfo.expiresIn);
     setCookie("accessToken", authInfo.accessToken, authInfo.expiresIn);
     setCookie("expiresIn", authInfo.expiresIn, authInfo.expiresIn);
     setCookie("refreshToken", authInfo.refreshToken, authInfo.refreshExpiresIn);
@@ -56,6 +61,7 @@ export class ClientRequestContext implements RequestContext {
       authInfo.refreshExpiresIn
     );
 
+    this.userId = authInfo.userId;
     this.accessToken = authInfo.accessToken;
     this.expiresIn = authInfo.expiresIn;
     this.refreshToken = authInfo.refreshToken;
@@ -63,11 +69,13 @@ export class ClientRequestContext implements RequestContext {
   }
 
   onLogout(): void {
+    this.userId = undefined;
     this.accessToken = undefined;
     this.expiresIn = undefined;
     this.refreshToken = undefined;
     this.refreshExpiresIn = undefined;
 
+    Cookies.remove("userId");
     Cookies.remove("accessToken");
     Cookies.remove("expiresIn");
     Cookies.remove("refreshToken");
@@ -93,6 +101,8 @@ function setCookie(name: string, value: string | number, expiresSec: number) {
   const v = typeof value === "string" ? value : value.toString();
   Cookies.set(name, v, {
     expires: new Date(expiresSec * MILLS_PER_SECOND),
+    path: '/',
+    // httpOnly: true,
     secure: true,
     sameSite: "Strict",
   });

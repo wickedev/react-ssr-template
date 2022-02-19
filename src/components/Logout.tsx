@@ -1,13 +1,17 @@
+import { useRelayEnvironment } from "react-relay";
 import { useAuth } from "../store/AuthContext";
 
 export function Logout() {
+  const enviroment = useRelayEnvironment();
+
   const auth = useAuth();
 
-  return (
-    <button
-      onClick={auth.onLogout.bind(auth)}
-    >
-      Logout
-    </button>
-  );
+  const handleLogout = () => {
+    enviroment.commitUpdate((store) => {
+      store.getRoot().getLinkedRecord("myInfo")?.invalidateRecord()
+    });
+    auth.onLogout();
+  };
+
+  return <button onClick={handleLogout}>Logout</button>;
 }

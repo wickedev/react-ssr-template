@@ -3,10 +3,11 @@ import {
   graphql,
   PreloadedQuery,
   useMutation,
-  usePreloadedQuery,
+  usePreloadedQuery
 } from "react-relay";
 import { RouteProps, useNavigation } from "yarr";
 import { Content } from "../components/Content";
+import { useAuthSnapshot } from "../store/AuthContext";
 import { PostDeleteMutation } from "./__generated__/PostDeleteMutation.graphql";
 import { PostQuery } from "./__generated__/PostQuery.graphql";
 
@@ -22,10 +23,14 @@ export const postQuery = graphql`
       id
       title
       content
+      author {
+        id
+      }
     }
   }
 `;
 export default function PostPage({ preloaded }: PostPageProps) {
+  const auth = useAuthSnapshot();
   const data = usePreloadedQuery<PostQuery>(postQuery, preloaded.query);
   const navigation = useNavigation();
   const [commit, isInFlight] = useMutation<PostDeleteMutation>(graphql`
@@ -48,7 +53,7 @@ export default function PostPage({ preloaded }: PostPageProps) {
         <title>{data.post?.title}</title>
       </Helmet>
       {JSON.stringify(data.post, null, 2)}
-      <button
+      {auth.userId === data.post.author?.id && <button
         onClick={() => {
           commit({
             variables: {
@@ -61,7 +66,7 @@ export default function PostPage({ preloaded }: PostPageProps) {
         }}
       >
         delete
-      </button>
+      </button>}
     </Content>
   );
 }

@@ -1,11 +1,11 @@
 import { useSnapshot } from "valtio";
 import { Link } from "yarr";
-import { useAuth } from "../store/AuthContext";
+import { useAuth, useAuthSnapshot } from "../store/AuthContext";
 import { Logout } from "./Logout";
 import { UserInfo } from "./UserInfo";
 
 export const Navbar = () => {
-  const auth = useSnapshot(useAuth());
+  const auth = useAuthSnapshot();
 
   return (
     <div className="sticky top-0 z-40 w-full">

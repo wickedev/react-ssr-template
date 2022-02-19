@@ -1,10 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { decode } from "js-base64";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { graphql, useMutation } from "react-relay";
+import { useSnapshot } from "valtio";
 import { useNavigation } from "yarr";
 import * as yup from "yup";
 import { Content } from "../components/Content";
+import { useAuth, useAuthSnapshot } from "../store/AuthContext";
 import { NewPostMutation } from "./__generated__/NewPostMutation.graphql";
 interface NewPostInput {
   title: string;
@@ -24,6 +27,7 @@ interface NewPostProps {
   };
 }
 export default function NewPostPage({ search: { cid } }: NewPostProps) {
+  const auth = useAuthSnapshot();
   const navigation = useNavigation();
   const {
     register,
@@ -52,6 +56,12 @@ export default function NewPostPage({ search: { cid } }: NewPostProps) {
       }
     }
   `);
+
+  useEffect(() => {
+    if (!auth.isAuthentiated) {
+      navigation.push("/");
+    }
+  }, [auth.isAuthentiated]);
 
   const onSubmit = (data: NewPostInput) => {
     commit({

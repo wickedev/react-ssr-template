@@ -4,14 +4,13 @@ import {
   graphql,
   PreloadedQuery,
   useFragment,
-  usePreloadedQuery,
+  usePreloadedQuery
 } from "react-relay";
-import { useSnapshot } from "valtio";
 import { Link, RouteProps } from "yarr";
 import { Posts, postsFragment } from "../components/Posts";
 import { Progress } from "../components/Progress";
 import { PostsFragment_query$key } from "../components/__generated__/PostsFragment_query.graphql";
-import { useAuth } from "../store/AuthContext";
+import { useAuthSnapshot } from "../store/AuthContext";
 import { HomePostsQuery } from "./__generated__/HomePostsQuery.graphql";
 
 export interface HomePageProps extends RouteProps<"/"> {
@@ -26,7 +25,7 @@ export const homePostsQuery = graphql`
 `;
 
 export default function HomePage({ preloaded }: HomePageProps) {
-  const auth = useSnapshot(useAuth());
+  const auth = useAuthSnapshot();
 
   const [search, setSearch] = useState("");
 

@@ -29,8 +29,14 @@ export default function SignUpPage() {
       $password: String!
     ) {
       signUp(email: $email, name: $name, password: $password) {
-        id
-        name
+        __typename
+        ... on User {
+          id
+          name
+        }
+        ... on UserAlreadyExistError {
+          message
+        }
       }
     }
   `);
@@ -51,15 +57,13 @@ export default function SignUpPage() {
         name: null,
       },
       onCompleted: (response, errors) => {
-        navigation.push("/");
-      },
-      onError: (error) => {
-        setError("password", {
-          message:    (error as any).source.errors
-          .flatMap((e: any) => Object.values(e.extensions))
-          .map((e: any) => e.message)
-          .join(', ')
-        })
+        if (response.signUp.__typename === "User") {
+          navigation.push("/");
+        } else if (response.signUp.__typename === "UserAlreadyExistError") {
+          setError("password", {
+            message: response.signUp.message,
+          });
+        }
       },
     });
   };

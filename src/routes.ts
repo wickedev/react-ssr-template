@@ -48,6 +48,9 @@ export function createRoutes(
     {
       path: "/post/new",
       component: page(() => import("./pages/NewPost")),
+      redirectRules: () => {
+        return auth.isAuthentiated ? null : "/";
+      },
     },
     {
       path: "/post/:id",

@@ -19,15 +19,6 @@ directive @provides(fields: _FieldSet!) on FIELD_DEFINITION
 """Specifies required input field set from the base type for a resolver"""
 directive @requires(fields: _FieldSet!) on FIELD_DEFINITION
 
-type AuthResponse {
-  accessToken: String!
-  expiresIn: Long!
-  refreshExpiresIn: Long!
-  refreshToken: String!
-  scope: String!
-  tokenType: String!
-}
-
 type AuthResponseWithID {
   accessToken: String!
   expiresIn: Long!
@@ -43,18 +34,24 @@ enum Direction {
   DESC
 }
 
+type InvalidEmailOrPasswordError {
+  message: String!
+}
+
 """Local Date Time type"""
 scalar LocalDateTime
+
+union LoginResponse = AuthResponseWithID | InvalidEmailOrPasswordError
 
 """Long type"""
 scalar Long
 
 type Mutation {
-  login(email: String!, password: String!): AuthResponseWithID!
+  login(email: String!, password: String!): LoginResponse!
   postDelete(id: ID!): ID!
   postUpload(uploadedPost: UploadedPostInput!): UploadPost
-  refresh(token: String!): AuthResponse!
-  signUp(email: String!, name: String, password: String!): User!
+  refresh(token: String!): AuthResponseWithID!
+  signUp(email: String!, name: String, password: String!): SignUpResponse!
 }
 
 interface Node {
@@ -104,6 +101,8 @@ type Query {
   users(before: ID, last: Int): UserConnect!
 }
 
+union SignUpResponse = User | UserAlreadyExistError
+
 type UploadPost {
   post: PostEdge!
 }
@@ -120,6 +119,10 @@ type User implements Node {
   name: String
   posts(before: ID, last: Int): PostConnect!
   roles: [String!]!
+}
+
+type UserAlreadyExistError {
+  message: String!
 }
 
 type UserConnect {

@@ -5,6 +5,8 @@ import { RequestContextRefreshMutation } from "./__generated__/RequestContextRef
 
 export interface RequestContext {
   isServer: boolean;
+
+  userId?: string;
   accessToken?: string;
   expiresIn?: number;
   refreshToken?: string;
@@ -37,6 +39,7 @@ export function refresh(
       mutation: graphql`
         mutation RequestContextRefreshMutation($token: String!) {
           refresh(token: $token) {
+            userId
             accessToken
             expiresIn
             refreshToken

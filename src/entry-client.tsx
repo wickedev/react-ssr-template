@@ -23,13 +23,13 @@ const router = createBrowserRouter({
 });
 
 const container = document.getElementById("app");
-/* ReactDOM.createRoot(container!!).render(
-  <AppRoot router={router} relayEnvironment={relayEnvironment} auth={auth} />
-); */
-ReactDOM.hydrateRoot(
-  container!!,
+ReactDOM.createRoot(container!!).render(
   <AppRoot router={router} relayEnvironment={relayEnvironment} auth={auth} />
 );
+/* ReactDOM.hydrateRoot(
+  container!!,
+  <AppRoot router={router} relayEnvironment={relayEnvironment} auth={auth} />
+); */
 /* ReactDOM.render(
   <AppRoot router={router} relayEnvironment={relayEnvironment} auth={auth} />,
   container
