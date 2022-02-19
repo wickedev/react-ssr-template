@@ -7,6 +7,7 @@ import {
 } from "react-relay";
 import { RouteProps, useNavigation } from "yarr";
 import { Content } from "../components/Content";
+import { message } from "../lib/error-message-in-source";
 import { useAuthSnapshot } from "../store/AuthContext";
 import { PostDeleteMutation } from "./__generated__/PostDeleteMutation.graphql";
 import { PostQuery } from "./__generated__/PostQuery.graphql";
@@ -53,20 +54,25 @@ export default function PostPage({ preloaded }: PostPageProps) {
         <title>{data.post?.title}</title>
       </Helmet>
       {JSON.stringify(data.post, null, 2)}
-      {auth.userId === data.post.author?.id && <button
-        onClick={() => {
-          commit({
-            variables: {
-              id: data.post?.id!!,
-            },
-            onCompleted: () => {
-              navigation.push("/");
-            },
-          });
-        }}
-      >
-        delete
-      </button>}
+      {auth.userId === data.post.author?.id && (
+        <button
+          onClick={() => {
+            commit({
+              variables: {
+                id: data.post?.id!!,
+              },
+              onCompleted: () => {
+                navigation.push("/");
+              },
+              onError: (error) => {
+                alert(message(error));
+              },
+            });
+          }}
+        >
+          delete
+        </button>
+      )}
     </Content>
   );
 }
